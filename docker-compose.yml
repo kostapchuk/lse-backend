@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+  mongodb:
+    image: mongo:5.0.9
+    container_name: education-system-mongodb
+    ports:
+      - ${MONGODB_PORT:-27017}:${MONGODB_PORT:-27017}
+    restart: always
+    environment:
+      MONGODB_DATABASE: ${MONGODB_DATABASE:-lse}
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME:-admin}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD:-admin}

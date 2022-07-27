@@ -1,0 +1,17 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://${MONGODB_HOST}:${MONGODB_PORT}/${MONGODB_DATABASE}
+      password: ${MONGO_INITDB_ROOT_USERNAME}
+      username: ${MONGO_INITDB_ROOT_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties.hibernate:
+      generate_statistics: true
+      session:
+        events.log.LOG_QUERIES_SLOWER_THAN_MS: 1
+logging:
+  level:
+    org.hibernate.stat: DEBUG
