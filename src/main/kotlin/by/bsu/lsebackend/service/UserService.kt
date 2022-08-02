@@ -2,6 +2,7 @@ package by.bsu.lsebackend.service
 
 import by.bsu.lsebackend.dto.UserRequest
 import by.bsu.lsebackend.dto.UserResponse
+import by.bsu.lsebackend.entity.User
 import by.bsu.lsebackend.exception.BadRequestException
 import by.bsu.lsebackend.exception.ResourceNotFoundException
 import by.bsu.lsebackend.mapper.toEntity
@@ -30,14 +31,14 @@ class UserService(private val userRepository: UserRepository) {
         )
 
 
-    fun updateById(id: String, userRequest: UserRequest): Mono<UserResponse> = userRepository.findById(id)
-        .flatMap { foundUser ->
-            findByFirstNameOrError(foundUser.firstName)
-                .switchIfEmpty(
-                    userRepository.save(foundUser)
-                        .map { it.toResponse() }
-                )
-        }
+    fun updateById(id: String, userRequest: UserRequest) = userRepository.findById(id)
+        .flatMap { it ->
+            userRepository.save(User(it.id, userRequest.firstName, userRequest.age)).map { it.toResponse() }
+        }.switchIfEmpty(
+            Mono.error(
+                BadRequestException("User with $id does not exist")
+            )
+        )
 
     fun deleteById(id: String): Mono<Void> = findById(id).flatMap { userRepository.deleteById(id) }
 

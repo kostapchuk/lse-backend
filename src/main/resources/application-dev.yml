@@ -1,9 +1,7 @@
 spring:
   data:
     mongodb:
-      uri: mongodb://${MONGODB_HOST}:${MONGODB_PORT}/${MONGODB_DATABASE}
-      password: ${MONGO_INITDB_ROOT_USERNAME}
-      username: ${MONGO_INITDB_ROOT_PASSWORD}
+      uri: mongodb://${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB_NAME}
   jpa:
     hibernate:
       ddl-auto: validate
@@ -15,3 +13,7 @@ spring:
 logging:
   level:
     org.hibernate.stat: DEBUG
+
+server:
+  error:
+    include-message: always
