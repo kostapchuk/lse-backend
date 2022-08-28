@@ -9,5 +9,5 @@ class QuizService(private val quizRepository: QuizRepository) {
 
     fun findAll() = quizRepository.findAll()
 
-    fun create (quiz: Quiz) = quizRepository.save(quiz)
+    fun create (quiz: Quiz) = quizRepository.insert(quiz)
 }
