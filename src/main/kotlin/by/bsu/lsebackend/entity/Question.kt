@@ -5,5 +5,6 @@ import java.util.UUID
 class Question(
     var id: String = UUID.randomUUID().toString(),
     val text: String,
-    val multipleChoice: Boolean
+    val multipleChoice: Boolean,
+    val cost: Int
 )
