@@ -25,7 +25,7 @@ class QuizResultServiceTest(@Autowired private val quizResultService: QuizResult
     private lateinit var quizRepository: QuizRepository
 
     private var quiz: Quiz = Quiz(
-        "quizId", listOf(
+        "quizId", "Первая помощь утопающим", listOf(
             QuestionAndAnswers(
                 Question("1", "Question 1", false, 5),
                 listOf(
@@ -58,13 +58,12 @@ class QuizResultServiceTest(@Autowired private val quizResultService: QuizResult
                     QuestionAndAnswersRequest("111", listOf("a333"))
                 )
             ),
-            UserQuizRequest("", "", "", "", "")
+            UserQuizRequest("Kirill", "Ostapchuk", "kera.ostapchuk2@mail.ru", "123q", "FSC")
         )
 
     @Test
     fun validateQuizResult() {
         Mockito.`when`(quizRepository.findById("quizId")).then { Mono.just(quiz) }
-
         StepVerifier.create(quizResultService.validate(quizResultRequest))
             .expectSubscription()
             .expectNext(17)

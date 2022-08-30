@@ -17,3 +17,6 @@ logging:
 server:
   error:
     include-message: always
+
+EMAIL_SENDER_USERNAME: ${EMAIL_SENDER_USERNAME}
+EMAIL_SENDER_PASSWORD: ${EMAIL_SENDER_PASSWORD}
