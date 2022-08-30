@@ -8,6 +8,8 @@ import org.springframework.data.mongodb.core.mapping.Field;
 class Quiz(
     @Id
     var id: String? = null,
+    @Field("name")
+    val name: String,
     @Field("questionsAndAnswers")
     val questionsAndAnswers: List<QuestionAndAnswers>
 )
