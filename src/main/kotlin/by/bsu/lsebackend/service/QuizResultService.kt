@@ -15,10 +15,10 @@ class QuizResultService(
 ) {
 
     fun validate(quizResultRequest: QuizResultRequest) =
-        quizRepository.findById(quizResultRequest.quizResult.quizId)
+        quizRepository.findById(quizResultRequest.quizResult.id)
             .map {
                 val result = it.questionsAndAnswers.stream()
-                    .map { qAndA -> retrieveScore(qAndA, quizResultRequest.quizResult.questionAndAnswersRequest) }
+                    .map { qAndA -> retrieveScore(qAndA, quizResultRequest.quizResult.questionAndAnswersResult) }
                     .reduce { acc, next -> acc + next }
                     .orElse(0)
                 val maxScore =
