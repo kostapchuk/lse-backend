@@ -8,6 +8,6 @@ import javax.validation.constraints.NotNull
 class QuizResult(
     @field:NotNull(message = "Quiz id should present")
     @field:NotEmpty(message = "Quiz id should present")
-    val quizId: String,
-    val questionAndAnswersRequest: List<QuestionAndAnswersRequest>,
+    val id: String,
+    val questionAndAnswersResult: List<QuestionAndAnswersRequest>,
 )
