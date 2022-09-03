@@ -17,12 +17,12 @@ class QuizResultService(
     fun validate(quizResultRequest: QuizResultRequest) =
         quizRepository.findById(quizResultRequest.quizResult.id)
             .map {
-                val result = it.questionsAndAnswers.stream()
+                val result = it.items.stream()
                     .map { qAndA -> retrieveScore(qAndA, quizResultRequest.quizResult.questionAndAnswersResult) }
                     .reduce { acc, next -> acc + next }
                     .orElse(0)
                 val maxScore =
-                    it.questionsAndAnswers.stream().map(QuestionAndAnswers::question).map(Question::cost).reduce { acc, next -> acc + next }
+                    it.items.stream().map(QuestionAndAnswers::question).map(Question::cost).reduce { acc, next -> acc + next }
                         .orElse(0)
                 senderService.send(
                     quizResultRequest.userQuizRequest.email,
@@ -47,5 +47,5 @@ class QuizResultService(
             .findFirst()
             .orElse(0)
 
-    infix fun <T> List<T>.equalsIgnoreOrder(other: List<T>) = this.size == other.size && this.toSet() == other.toSet()
+    fun <T> List<T>.equalsIgnoreOrder(other: List<T>) = this.size == other.size && this.toSet() == other.toSet()
 }
