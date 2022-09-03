@@ -11,5 +11,5 @@ class Quiz(
     @Field("name")
     val name: String,
     @Field("questionsAndAnswers")
-    val questionsAndAnswers: List<QuestionAndAnswers>
+    val items: List<QuestionAndAnswers>
 )
