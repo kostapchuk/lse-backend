@@ -2,7 +2,6 @@ package by.bsu.lsebackend.controller
 
 import by.bsu.lsebackend.dto.QuizResultRequest
 import by.bsu.lsebackend.service.QuizResultService
-import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -13,6 +12,5 @@ import org.springframework.web.bind.annotation.RestController
 class QuizResultController(private val quizResultService: QuizResultService) {
 
     @PostMapping
-    @CrossOrigin(origins = ["http://localhost:3000"])
     fun validate(@RequestBody quizResultRequest: QuizResultRequest) = quizResultService.validate(quizResultRequest)
 }
