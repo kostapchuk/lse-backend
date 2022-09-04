@@ -18,5 +18,9 @@ server:
   error:
     include-message: always
 
-EMAIL_SENDER_USERNAME: ${EMAIL_SENDER_USERNAME}
-EMAIL_SENDER_PASSWORD: ${EMAIL_SENDER_PASSWORD}
+email:
+  sender:
+    username: ${EMAIL_SENDER_USERNAME}
+    password: ${EMAIL_SENDER_PASSWORD}
+cors:
+  origins: ${CORS_ORIGIN}

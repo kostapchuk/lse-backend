@@ -15,10 +15,10 @@ import javax.mail.internet.MimeMessage
 @Service
 class SenderService(private val mailRuSmtpProperties: Properties) {
 
-    @Value("\${EMAIL_SENDER_USERNAME}")
+    @Value("\${email.sender.username}")
     lateinit var authUserName: String
 
-    @Value("\${EMAIL_SENDER_PASSWORD}")
+    @Value("\${email.sender.password}")
     lateinit var authPassword: String
 
     fun send(
