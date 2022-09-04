@@ -7,6 +7,8 @@ import org.springframework.web.reactive.config.CorsRegistry
 import org.springframework.web.reactive.config.EnableWebFlux
 import org.springframework.web.reactive.config.WebFluxConfigurer
 
+// TODO custom exception & adjust cors config to be more precise
+
 @Configuration
 @EnableWebFlux
 class WebServerConfiguration : WebFluxConfigurer {
