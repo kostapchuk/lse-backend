@@ -16,7 +16,7 @@ class WebServerConfiguration : WebFluxConfigurer {
     @Value("\${cors.origins}")
     private val corsOrigins: String = String.empty()
 
-    override fun addCorsMappings(registry: CorsRegistry) {
+    override fun addCorsMappings(registry: CorsRegistry,) {
         if (corsOrigins.isEmpty()) {
             throw IllegalArgumentException("Cors origin url is not provided.")
         }

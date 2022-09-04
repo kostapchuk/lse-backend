@@ -15,11 +15,13 @@ import javax.mail.internet.MimeMessage
 @Service
 class SenderService(private val mailRuSmtpProperties: Properties) {
 
+    // todo move to config
+
     @Value("\${email.sender.username}")
-    lateinit var authUserName: String
+    lateinit var senderUsername: String
 
     @Value("\${email.sender.password}")
-    lateinit var authPassword: String
+    lateinit var senderPassword: String
 
     fun send(
         to: String,
@@ -28,12 +30,12 @@ class SenderService(private val mailRuSmtpProperties: Properties) {
     ) {
         val session = Session.getInstance(mailRuSmtpProperties, object : Authenticator() {
             override fun getPasswordAuthentication(): PasswordAuthentication {
-                return PasswordAuthentication(authUserName, authPassword)
+                return PasswordAuthentication(senderUsername, senderPassword)
             }
         })
         try {
             val mimeMsg = MimeMessage(session)
-            mimeMsg.setFrom(InternetAddress(authUserName))
+            mimeMsg.setFrom(InternetAddress(senderUsername))
             mimeMsg.addRecipient(Message.RecipientType.TO, InternetAddress(to))
             mimeMsg.subject = subject
             mimeMsg.setText(message)

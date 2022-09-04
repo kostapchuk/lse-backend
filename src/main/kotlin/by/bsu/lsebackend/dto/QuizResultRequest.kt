@@ -1,9 +1,26 @@
 package by.bsu.lsebackend.dto
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonProperty
+import javax.validation.constraints.NotEmpty
+import javax.validation.constraints.NotNull
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class QuizResultRequest(
-    val quizResult: QuizResult,
-    val userQuizRequest: UserQuizRequest
-)
+    @field:NotNull(message = "Quiz id should present")
+    @field:NotEmpty(message = "Quiz id should present")
+    @JsonProperty("quizId") val quizId: String,
+
+    @field:NotNull(message = "Quiz items should present")
+    @JsonProperty("items") val items: List<QuizItemRequest>,
+) {
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    data class QuizItemRequest (
+        @field:NotNull(message = "Question id should present")
+        @field:NotEmpty(message = "Question id should present")
+        @JsonProperty("questionId") val questionId: String,
+
+        @field:NotNull(message = "Answers should present")
+        @JsonProperty("answerIds") val answerIds: List<String>,
+    )
+}
