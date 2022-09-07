@@ -3,6 +3,8 @@ package by.bsu.lsebackend.dto
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 
+// TODO add validation
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 class QuizRequest(
     @JsonProperty("quizName") val name: String,

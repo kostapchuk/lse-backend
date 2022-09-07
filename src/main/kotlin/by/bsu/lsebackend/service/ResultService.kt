@@ -3,31 +3,53 @@ package by.bsu.lsebackend.service
 import by.bsu.lsebackend.dto.QuizResultRequest
 import by.bsu.lsebackend.dto.ResultRequest
 import by.bsu.lsebackend.entity.Quiz
+import by.bsu.lsebackend.entity.QuizResult
 import by.bsu.lsebackend.extension.equalsIgnoreOrder
 import by.bsu.lsebackend.repository.QuizRepository
+import by.bsu.lsebackend.repository.ResultRepository
 import org.springframework.stereotype.Service
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 @Service
 class ResultService(
     private val quizRepository: QuizRepository,
-    private val senderService: SenderService
+    private val senderService: SenderService,
+    private val resultRepository: ResultRepository,
 ) {
 
-    fun check(resultRequest: ResultRequest): Mono<Int> =
-        quizRepository.findById(resultRequest.quizResultRequest.quizId)
+    fun check(resultRequest: ResultRequest): Mono<Int> {
+        return quizRepository.findById(resultRequest.quizResultRequest.quizId)
             .map {
-                val result = it.items.stream()
-                    .map { item -> retrieveScore(item, resultRequest.quizResultRequest.items) }
-                    .reduce { acc, next -> acc + next }
-                    .orElse(0)
-                senderService.send(
-                    resultRequest.userResultRequest.email,
-                    "Your result is $result out of ${retrieveMaxScore(it.items)}",
-                    "Результаты теста: ${it.name}"
+                QuizResult(
+                    quizName = it.name,
+                    firstName = resultRequest.userResultRequest.firstName,
+                    lastName = resultRequest.userResultRequest.lastName,
+                    group = resultRequest.userResultRequest.group,
+                    faculty = resultRequest.userResultRequest.faculty,
+                    email = resultRequest.userResultRequest.email,
+                    score = it.items.stream()
+                        .map { item -> retrieveScore(item, resultRequest.quizResultRequest.items) }
+                        .reduce { acc, next -> acc + next }
+                        .orElse(0),
+                    maxScore = retrieveMaxScore(it.items),
                 )
-                return@map result
             }
+            .flatMap {
+                resultRepository.insert(it)
+            }.flatMap {
+//                senderService.send(
+//                    resultRequest.userResultRequest.email,
+//                    "Your score is ${it.score} out of ${it.maxScore}",
+//                    "Результаты теста: ${it.quizName}"
+//                )
+                return@flatMap Mono.just(it.score)
+            }
+    }
+
+    fun findAll(): Flux<QuizResult> = resultRepository.findAll()
+
+    fun findWithTailableCursorBy(): Flux<QuizResult> = resultRepository.findWithTailableCursorBy()
 
     private fun retrieveMaxScore(items: List<Quiz.QuizItem>): Int =
         items.stream()
@@ -38,7 +60,7 @@ class ResultService(
 
     private fun retrieveScore(
         quizItem: Quiz.QuizItem,
-        quizItemRequest: List<QuizResultRequest.QuizItemRequest>
+        quizItemRequest: List<QuizResultRequest.QuizItemRequest>,
     ): Int =
         quizItemRequest.stream()
             .filter { it.questionId == quizItem.question.id }

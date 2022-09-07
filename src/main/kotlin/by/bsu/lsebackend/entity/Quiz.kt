@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Field
 import java.util.UUID
 
 @Document("quizzes")
-class Quiz(
+data class Quiz(
     @Id
     val id: String = UUID.randomUUID().toString(),
     @Field("name")
