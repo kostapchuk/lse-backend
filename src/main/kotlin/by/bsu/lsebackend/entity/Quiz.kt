@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document("quizzes")
-class Quiz(
+data class Quiz(
     @Id
     var id: String? = null,
     @Field("name")
