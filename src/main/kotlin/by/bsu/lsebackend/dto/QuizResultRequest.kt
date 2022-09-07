@@ -2,6 +2,7 @@ package by.bsu.lsebackend.dto
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
+import javax.validation.Valid
 import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.NotNull
 
@@ -12,6 +13,7 @@ data class QuizResultRequest(
     @JsonProperty("quizId") val quizId: String,
 
     @field:NotNull(message = "Quiz items should present")
+    @field:Valid
     @JsonProperty("items") val items: List<QuizItemRequest>,
 ) {
     @JsonIgnoreProperties(ignoreUnknown = true)
