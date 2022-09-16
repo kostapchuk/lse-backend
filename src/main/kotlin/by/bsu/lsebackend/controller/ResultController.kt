@@ -23,6 +23,7 @@ class ResultController(private val resultService: ResultService) {
     fun check(@Validated @RequestBody resultRequest: ResultRequest): Mono<Int> =
         resultService.check(resultRequest)
 
+    // todo investigate repeatWhen, subscribeOn
     @GetMapping(value = ["/stream"], produces = [TEXT_EVENT_STREAM_VALUE])
     fun findAllStreamed(): Flux<QuizResult> = resultService.findWithTailableCursorBy()
         .repeatWhen { flux -> flux.delayElements(Duration.ofSeconds(1)) }

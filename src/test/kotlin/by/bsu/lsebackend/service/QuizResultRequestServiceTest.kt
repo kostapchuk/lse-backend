@@ -14,7 +14,7 @@ import org.springframework.test.context.ActiveProfiles
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 
-// internal??
+// todo internal?
 @SpringBootTest
 @ActiveProfiles("test")
 class QuizResultRequestServiceTest(@Autowired private val resultService: ResultService) {
