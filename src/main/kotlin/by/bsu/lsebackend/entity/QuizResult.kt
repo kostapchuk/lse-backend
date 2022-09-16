@@ -11,8 +11,6 @@ data class QuizResult(
     val id: String = UUID.randomUUID().toString(),
     @Field("quizName")
     val quizName: String,
-//    @Field("attempt")
-//    val attempt: Int,
     @Field("firstName")
     val firstName: String,
     @Field("lastName")

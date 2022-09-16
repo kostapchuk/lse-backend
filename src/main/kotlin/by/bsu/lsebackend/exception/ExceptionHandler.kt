@@ -37,6 +37,8 @@ class ExceptionHandler {
         )
     }
 
+    // todo: is it needed?
+
 //    @ExceptionHandler(Exception::class)
 //    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 //    fun serverExceptionHandler(ex: Exception): String? {
