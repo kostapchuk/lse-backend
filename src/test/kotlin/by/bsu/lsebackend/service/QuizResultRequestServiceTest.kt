@@ -23,31 +23,33 @@ class QuizResultRequestServiceTest(@Autowired private val resultService: ResultS
     private lateinit var quizRepository: QuizRepository
 
     private var quiz: Quiz = Quiz(
-        "quizId", "Первая помощь утопающим", listOf(
+        "quizId", "Первая помощь утопающим",
+        listOf(
             Quiz.QuizItem(
-                Quiz.QuizItem.Question("1", "Question 1", false, 5),
+                Quiz.QuizItem.Question("1", "Question 1", 5),
                 listOf(
-                    Quiz.QuizItem.Answer("a1", "answer1", false),
+                    Quiz.QuizItem.Answer("a1", "answer1"),
                     Quiz.QuizItem.Answer("a2", "answer2", true),
-                    Quiz.QuizItem.Answer("a3", "answer3", false)
+                    Quiz.QuizItem.Answer("a3", "answer3")
                 )
             ), Quiz.QuizItem(
-                Quiz.QuizItem.Question("11", "Question 11", true, 10),
+                Quiz.QuizItem.Question("11", "Question 11", 10, true),
                 listOf(
-                    Quiz.QuizItem.Answer("a11", "answer11", false),
+                    Quiz.QuizItem.Answer("a11", "answer11"),
                     Quiz.QuizItem.Answer("a22", "answer22", true),
                     Quiz.QuizItem.Answer("a33", "answer33", true)
                 )
             ),
             Quiz.QuizItem(
-                Quiz.QuizItem.Question("111", "Question 111", false, 7),
+                Quiz.QuizItem.Question("111", "Question 111", 7),
                 listOf(
-                    Quiz.QuizItem.Answer("a111", "answer111", false),
-                    Quiz.QuizItem.Answer("a222", "answer222", false),
+                    Quiz.QuizItem.Answer("a111", "answer111"),
+                    Quiz.QuizItem.Answer("a222", "answer222"),
                     Quiz.QuizItem.Answer("a333", "answer333", true)
                 )
             )
-        )
+        ),
+        22
     )
     private var resultRequest: ResultRequest =
         ResultRequest(
