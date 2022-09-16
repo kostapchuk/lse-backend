@@ -19,7 +19,7 @@ data class QuizResultRequest(
     val items: List<QuizItemRequest>,
 ) {
     @JsonIgnoreProperties(ignoreUnknown = true)
-    data class QuizItemRequest (
+    data class QuizItemRequest(
         @field:NotNull(message = "Question id should present")
         @field:NotEmpty(message = "Question id should present")
         @JsonProperty("questionId")
