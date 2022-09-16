@@ -11,6 +11,7 @@ import org.springframework.web.bind.support.WebExchangeBindException
 import org.springframework.web.server.ResponseStatusException
 import reactor.core.publisher.Mono
 
+// todo: add logger
 @RestControllerAdvice
 class ExceptionHandler {
 
