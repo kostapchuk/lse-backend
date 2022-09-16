@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import javax.validation.Valid
 
-// TODO add validation
+// todo: add validation like in QuizRequest
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class ResultRequest(
