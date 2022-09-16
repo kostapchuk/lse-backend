@@ -6,6 +6,8 @@ import javax.validation.Valid
 import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.NotNull
 
+// todo: add validation like in QuizRequest
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class QuizResultRequest(
     @field:NotNull(message = "Quiz id should present")
