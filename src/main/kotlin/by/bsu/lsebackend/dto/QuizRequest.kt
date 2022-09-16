@@ -50,9 +50,9 @@ class QuizRequest(
                 message = "Quiz name length should not be less than {min} and greater than {max}"
             )
             val text: String,
-            @JsonProperty("multipleChoice", required = true)
+            @JsonProperty("multipleChoice")
             @field:NotNull
-            val multipleChoice: Boolean,
+            val multipleChoice: Boolean = false,
             @JsonProperty("cost", required = true)
             @field:Min(value = 1, message = "Cost should not be less than {value}")
             @field:Max(value = 2147483647, message = "Cost should not be greater than {value}")

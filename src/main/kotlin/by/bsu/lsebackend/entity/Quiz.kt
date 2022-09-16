@@ -24,8 +24,8 @@ data class Quiz(
         class Question(
             val id: String = UUID.randomUUID().toString(),
             val text: String,
-            val multipleChoice: Boolean,
             val cost: Int,
+            val multipleChoice: Boolean = false,
         )
 
         class Answer(
