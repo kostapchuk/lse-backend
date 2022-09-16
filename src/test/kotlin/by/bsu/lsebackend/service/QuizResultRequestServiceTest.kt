@@ -14,7 +14,7 @@ import org.springframework.test.context.ActiveProfiles
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 
-//internal??
+// internal??
 @SpringBootTest
 @ActiveProfiles("test")
 class QuizResultRequestServiceTest(@Autowired private val resultService: ResultService) {
@@ -32,7 +32,8 @@ class QuizResultRequestServiceTest(@Autowired private val resultService: ResultS
                     Quiz.QuizItem.Answer("a2", "answer2", true),
                     Quiz.QuizItem.Answer("a3", "answer3")
                 )
-            ), Quiz.QuizItem(
+            ),
+            Quiz.QuizItem(
                 Quiz.QuizItem.Question("11", "Question 11", 10, true),
                 listOf(
                     Quiz.QuizItem.Answer("a11", "answer11"),

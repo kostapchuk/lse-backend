@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service
 import java.util.Properties
 import javax.mail.Authenticator
 import javax.mail.Message
-import javax.mail.MessagingException
 import javax.mail.PasswordAuthentication
 import javax.mail.Session
 import javax.mail.Transport
@@ -19,7 +18,6 @@ class MailRuSenderService(
     private val emailSenderConfig: EmailSenderConfig,
 ) : SenderService {
 
-//    @Async
     override fun send(
         to: String,
         message: String,
@@ -33,15 +31,12 @@ class MailRuSenderService(
                 }
             }
         )
-        try {
-            val mimeMsg = MimeMessage(session)
-            mimeMsg.setFrom(InternetAddress(emailSenderConfig.username))
-            mimeMsg.addRecipient(Message.RecipientType.TO, InternetAddress(to))
-            mimeMsg.subject = subject
-            mimeMsg.setText(message)
-            Transport.send(mimeMsg)
-        } catch (mex: MessagingException) {
-            println("Cannot send email: $mex")
+        val mimeMsg = MimeMessage(session).apply {
+            this.addRecipient(Message.RecipientType.TO, InternetAddress(to))
+            this.subject = subject
+            this.setText(message)
+            this.setFrom(InternetAddress(emailSenderConfig.username))
         }
+        Transport.send(mimeMsg)
     }
 }

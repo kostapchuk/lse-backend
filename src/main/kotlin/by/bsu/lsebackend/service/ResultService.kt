@@ -40,8 +40,8 @@ class ResultService(
             }.flatMap {
                 senderService.send(
                     resultRequest.userResultRequest.email,
-                    "Your score is ${it.score} out of ${it.maxScore}",
-                    "Результаты теста: ${it.quizName}"
+                    "Ваш результат ${it.score} из ${it.maxScore}",
+                    "Результат теста: ${it.quizName}"
                 )
                 return@flatMap Mono.just(it.score)
             }

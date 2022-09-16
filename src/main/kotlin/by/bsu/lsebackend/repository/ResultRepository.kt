@@ -7,6 +7,8 @@ import reactor.core.publisher.Flux
 
 interface ResultRepository : ReactiveMongoRepository<QuizResult, String> {
 
+    // todo: add pagination and more precise fetching (by test, by group)
+
     @Tailable
     fun findWithTailableCursorBy(): Flux<QuizResult>
 }
