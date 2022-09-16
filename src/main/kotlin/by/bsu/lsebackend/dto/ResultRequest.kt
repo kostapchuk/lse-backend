@@ -8,6 +8,10 @@ import javax.validation.Valid
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class ResultRequest(
-    @JsonProperty("quizResult") @field:Valid val quizResultRequest: QuizResultRequest,
-    @JsonProperty("user") @field:Valid val userResultRequest: UserResultRequest,
+    @JsonProperty("quizResult")
+    @field:Valid
+    val quizResultRequest: QuizResultRequest,
+    @JsonProperty("user")
+    @field:Valid
+    val userResultRequest: UserResultRequest,
 )
