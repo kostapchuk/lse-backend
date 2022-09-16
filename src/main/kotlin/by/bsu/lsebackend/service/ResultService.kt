@@ -56,11 +56,12 @@ class ResultService(
         quizItemRequest.stream()
             .filter { it.questionId == quizItem.question.id }
             .filter {
-                it.answerIds.equalsIgnoreOrder(quizItem.answers.stream().filter { a -> a.correct }
-                    .map(Quiz.QuizItem.Answer::id).toList())
+                it.answerIds.equalsIgnoreOrder(
+                    quizItem.answers.stream().filter { a -> a.correct }
+                        .map(Quiz.QuizItem.Answer::id).toList()
+                )
             }
             .map { quizItem.question.cost }
             .findFirst()
             .orElse(0)
-
 }

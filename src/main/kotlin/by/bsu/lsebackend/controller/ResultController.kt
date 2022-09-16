@@ -27,5 +27,4 @@ class ResultController(private val resultService: ResultService) {
     fun findAllStreamed(): Flux<QuizResult> = resultService.findWithTailableCursorBy()
         .repeatWhen { flux -> flux.delayElements(Duration.ofSeconds(1)) }
         .subscribeOn(Schedulers.boundedElastic())
-
 }

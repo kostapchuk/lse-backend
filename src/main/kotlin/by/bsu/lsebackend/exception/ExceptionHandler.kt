@@ -12,20 +12,17 @@ import org.springframework.web.server.ResponseStatusException
 import reactor.core.publisher.Mono
 
 @RestControllerAdvice
-//@Slf4j
-class ExceptionHandlers {
+class ExceptionHandler {
 
     @ExceptionHandler(DecodingException::class)
     @ResponseStatus(BAD_REQUEST)
     fun decodingExceptionHandler(ex: DecodingException): Mono<ResponseStatusException> {
-//        .error(ex.message, ex)
         return Mono.error(ResponseStatusException(BAD_REQUEST, ex.message))
     }
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
     @ResponseStatus(BAD_REQUEST)
     fun methodArgumentNotValidExceptionHandler(ex: MethodArgumentNotValidException): Mono<ResponseStatusException> {
-//        .error(ex.message, ex)
         return Mono.error(ResponseStatusException(BAD_REQUEST, ex.message))
     }
 
@@ -43,8 +40,6 @@ class ExceptionHandlers {
 //    @ExceptionHandler(Exception::class)
 //    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 //    fun serverExceptionHandler(ex: Exception): String? {
-////        .error(ex.message, ex)
-//        println(ex)
 //        return ex.message
 //    }
 }

@@ -25,5 +25,4 @@ class QuizController(private val quizService: QuizService) {
     @PostMapping
     @ResponseStatus(CREATED)
     fun create(@RequestBody @Validated quiz: QuizRequest,): Mono<Quiz> = quizService.create(quiz)
-
 }
