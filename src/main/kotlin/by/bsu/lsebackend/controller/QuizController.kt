@@ -5,6 +5,7 @@ import by.bsu.lsebackend.dto.QuizResponse
 import by.bsu.lsebackend.entity.Quiz
 import by.bsu.lsebackend.service.QuizService
 import org.springframework.http.HttpStatus.CREATED
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -23,6 +24,6 @@ class QuizController(private val quizService: QuizService) {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    fun create(@RequestBody quiz: QuizRequest,): Mono<Quiz> = quizService.create(quiz)
+    fun create(@RequestBody @Validated quiz: QuizRequest,): Mono<Quiz> = quizService.create(quiz)
 
 }

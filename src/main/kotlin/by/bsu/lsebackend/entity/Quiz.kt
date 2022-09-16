@@ -13,6 +13,8 @@ data class Quiz(
     val name: String,
     @Field("items")
     val items: List<QuizItem>,
+    @Field("maxScore")
+    val maxScore: Int,
 ) {
     class QuizItem(
         val question: Question,

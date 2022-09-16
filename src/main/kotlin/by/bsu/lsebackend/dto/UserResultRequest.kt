@@ -8,17 +8,22 @@ import javax.validation.constraints.NotBlank
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class UserResultRequest(
     @field:NotBlank(message = "First name should present")
-    @JsonProperty("firstName") val firstName: String,
+    @JsonProperty("firstName")
+    val firstName: String,
 
     @field:NotBlank(message = "Last name should present")
-    @JsonProperty("lastName") val lastName: String,
+    @JsonProperty("lastName")
+    val lastName: String,
 
     @field:Email(message = "Email should present")
-    @JsonProperty("email") val email: String,
+    @JsonProperty("email")
+    val email: String,
 
     @field:NotBlank(message = "Group should present")
-    @JsonProperty("group") val group: String,
+    @JsonProperty("group")
+    val group: String,
 
     @field:NotBlank(message = "Faculty should present")
-    @JsonProperty("faculty") val faculty: String,
+    @JsonProperty("faculty")
+    val faculty: String,
 )

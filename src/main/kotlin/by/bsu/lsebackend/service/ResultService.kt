@@ -32,31 +32,22 @@ class ResultService(
                         .map { item -> retrieveScore(item, resultRequest.quizResultRequest.items) }
                         .reduce { acc, next -> acc + next }
                         .orElse(0),
-                    maxScore = retrieveMaxScore(it.items),
+                    maxScore = it.maxScore,
                 )
             }
             .flatMap {
                 resultRepository.insert(it)
             }.flatMap {
-//                senderService.send(
-//                    resultRequest.userResultRequest.email,
-//                    "Your score is ${it.score} out of ${it.maxScore}",
-//                    "Результаты теста: ${it.quizName}"
-//                )
+                senderService.send(
+                    resultRequest.userResultRequest.email,
+                    "Your score is ${it.score} out of ${it.maxScore}",
+                    "Результаты теста: ${it.quizName}"
+                )
                 return@flatMap Mono.just(it.score)
             }
     }
 
-    fun findAll(): Flux<QuizResult> = resultRepository.findAll()
-
     fun findWithTailableCursorBy(): Flux<QuizResult> = resultRepository.findWithTailableCursorBy()
-
-    private fun retrieveMaxScore(items: List<Quiz.QuizItem>): Int =
-        items.stream()
-            .map { it.question.cost }
-            .reduce { acc, next -> acc + next }
-            .orElse(0)
-
 
     private fun retrieveScore(
         quizItem: Quiz.QuizItem,

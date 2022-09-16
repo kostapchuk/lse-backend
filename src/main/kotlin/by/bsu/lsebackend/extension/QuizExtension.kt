@@ -28,7 +28,8 @@ fun Quiz.QuizItem.Question.toResponse() = QuizResponse.QuizItemResponse.Question
 
 fun QuizRequest.toEntity() = Quiz(
     name = this.name,
-    items = this.items.stream().map { it.toEntity() }.toList()
+    items = this.items.stream().map { it.toEntity() }.toList(),
+    maxScore = this.maxScore
 )
 
 fun QuizRequest.QuizItemRequest.toEntity() = Quiz.QuizItem(
