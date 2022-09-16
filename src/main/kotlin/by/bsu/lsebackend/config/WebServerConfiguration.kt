@@ -7,8 +7,6 @@ import org.springframework.web.reactive.config.CorsRegistry
 import org.springframework.web.reactive.config.EnableWebFlux
 import org.springframework.web.reactive.config.WebFluxConfigurer
 
-// TODO custom exception & adjust cors config to be more precise
-
 @Configuration
 @EnableWebFlux
 class WebServerConfiguration : WebFluxConfigurer {
@@ -21,9 +19,9 @@ class WebServerConfiguration : WebFluxConfigurer {
             throw IllegalArgumentException("Cors origin url is not provided.")
         }
         val allowedOrigins = corsOrigins.split(",").toTypedArray()
-        registry.addMapping("/**")
+        registry.addMapping("/api/v1/**")
             .allowedOrigins(*allowedOrigins)
-            .allowedMethods("*")
-            .allowedHeaders("*")
+            .allowedMethods("POST", "GET", "OPTIONS")
+            .allowedHeaders("Content-Type")
     }
 }
