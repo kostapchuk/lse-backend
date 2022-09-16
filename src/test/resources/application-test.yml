@@ -1,0 +1,7 @@
+cors:
+  origins: http://examplehost:3000
+
+email:
+  sender:
+    username: some-username
+    password: some-password

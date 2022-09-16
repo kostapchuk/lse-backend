@@ -5,8 +5,18 @@ spring:
   data:
     mongodb:
       uri: mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}/${MONGO_DB_NAME}?retryWrites=true&w=majority
+  cache:
+    caffeine:
+      spec: maximumSize=500, expireAfterAccess=24h
 logging:
   level:
     org.hibernate:
       SQL: error
       type.descriptor.sql.BasicBinder: error
+
+email:
+  sender:
+    username: ${EMAIL_SENDER_USERNAME}
+    password: ${EMAIL_SENDER_PASSWORD}
+cors:
+  origins: ${CORS_ORIGIN}

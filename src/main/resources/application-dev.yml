@@ -10,6 +10,9 @@ spring:
       generate_statistics: true
       session:
         events.log.LOG_QUERIES_SLOWER_THAN_MS: 1
+  cache:
+    caffeine:
+      spec: maximumSize=500, expireAfterAccess=30s
 logging:
   level:
     org.hibernate.stat: DEBUG
@@ -17,3 +20,10 @@ logging:
 server:
   error:
     include-message: always
+
+email:
+  sender:
+    username: ${EMAIL_SENDER_USERNAME}
+    password: ${EMAIL_SENDER_PASSWORD}
+cors:
+  origins: ${CORS_ORIGIN}
