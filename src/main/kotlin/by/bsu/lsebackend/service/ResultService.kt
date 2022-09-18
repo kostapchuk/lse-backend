@@ -38,11 +38,11 @@ class ResultService(
             .flatMap {
                 resultRepository.insert(it)
             }.flatMap {
-                senderService.send(
-                    resultRequest.userResultRequest.email,
-                    "Ваш результат ${it.score} из ${it.maxScore}",
-                    "Результат теста: ${it.quizName}"
-                )
+//                senderService.send(
+//                    resultRequest.userResultRequest.email,
+//                    "Ваш результат ${it.score} из ${it.maxScore}",
+//                    "Результат теста: ${it.quizName}"
+//                )
                 return@flatMap Mono.just(it.score)
             }
     }
