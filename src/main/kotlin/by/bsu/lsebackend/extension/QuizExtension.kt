@@ -7,12 +7,12 @@ import by.bsu.lsebackend.entity.Quiz
 fun Quiz.toResponse() = QuizResponse(
     this.id,
     this.name,
-    this.items.stream().map { it.toResponse() }.toList()
+    this.items.map { it.toResponse() }
 )
 
 fun Quiz.QuizItem.toResponse() = QuizResponse.QuizItemResponse(
     this.question.toResponse(),
-    this.answers.stream().map { it.toResponse() }.toList()
+    this.answers.map { it.toResponse() }
 )
 
 fun Quiz.QuizItem.Answer.toResponse() = QuizResponse.QuizItemResponse.AnswerResponse(
@@ -28,13 +28,13 @@ fun Quiz.QuizItem.Question.toResponse() = QuizResponse.QuizItemResponse.Question
 
 fun QuizRequest.toEntity() = Quiz(
     name = this.name,
-    items = this.items.stream().map { it.toEntity() }.toList(),
+    items = this.items.map { it.toEntity() },
     maxScore = this.maxScore
 )
 
 fun QuizRequest.QuizItemRequest.toEntity() = Quiz.QuizItem(
     this.question.toEntity(),
-    this.answers.stream().map { it.toEntity() }.toList()
+    this.answers.map { it.toEntity() }
 )
 
 fun QuizRequest.QuizItemRequest.AnswerRequest.toEntity() = Quiz.QuizItem.Answer(

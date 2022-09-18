@@ -57,8 +57,8 @@ class ResultService(
             .filter { it.questionId == quizItem.question.id }
             .filter {
                 it.answerIds.equalsIgnoreOrder(
-                    quizItem.answers.stream().filter { a -> a.correct }
-                        .map(Quiz.QuizItem.Answer::id).toList()
+                    quizItem.answers.filter { a -> a.correct }
+                        .map(Quiz.QuizItem.Answer::id)
                 )
             }
             .map { quizItem.question.cost }
