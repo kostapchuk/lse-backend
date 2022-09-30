@@ -2,7 +2,7 @@ package by.bsu.lsebackend.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
-data class UserResponse(
+data class StudentResponse(
     @JsonProperty("firstName")
     val firstName: String,
 
@@ -17,4 +17,7 @@ data class UserResponse(
 
     @JsonProperty("group")
     val group: String,
+
+    @JsonProperty("course")
+    val course: Int,
 )

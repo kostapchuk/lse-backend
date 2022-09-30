@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 // todo add validation
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class UserRequest(
+data class StudentRequest(
     @JsonProperty("firstName")
     val firstName: String,
 
@@ -24,6 +24,9 @@ data class UserRequest(
 
     @JsonProperty("group")
     val group: String,
+
+    @JsonProperty("course")
+    val course: Int,
 
     @JsonProperty("role")
     val role: String,
