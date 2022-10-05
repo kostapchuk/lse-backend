@@ -55,7 +55,14 @@ class WebSecurityConfig(
             .authenticationManager(authenticationManager)
             .securityContextRepository(securityContextRepository)
             .authorizeExchange()
-            .pathMatchers("/login", "/register", "/refresh-token").permitAll()
+            .pathMatchers(
+                "/login-teacher",
+                "/register-teacher",
+                "/refresh-token-teacher",
+                "/login-student",
+                "/register-student",
+                "/refresh-token-student"
+            ).permitAll()
             .anyExchange().authenticated()
             .and()
             .build()

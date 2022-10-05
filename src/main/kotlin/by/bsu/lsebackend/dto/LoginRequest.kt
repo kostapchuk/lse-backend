@@ -1,3 +1,5 @@
 package by.bsu.lsebackend.dto
 
-class LoginRequest(val email: String, val password: String)
+import by.bsu.lsebackend.entity.UserType
+
+class LoginRequest(val email: String, val password: String, val userType: UserType)

@@ -1,8 +1,12 @@
 package by.bsu.lsebackend.controller
 
 import by.bsu.lsebackend.dto.LoginRequest
+import by.bsu.lsebackend.dto.LoginResponse
 import by.bsu.lsebackend.dto.RefreshTokenRequest
 import by.bsu.lsebackend.dto.StudentRequest
+import by.bsu.lsebackend.dto.StudentResponse
+import by.bsu.lsebackend.dto.TeacherRequest
+import by.bsu.lsebackend.dto.TeacherResponse
 import by.bsu.lsebackend.service.UserService
 import org.springframework.http.HttpStatus.CREATED
 import org.springframework.validation.annotation.Validated
@@ -15,24 +19,29 @@ import reactor.core.publisher.Mono
 @RestController
 class UserController(private val userService: UserService) {
 
-    @PostMapping("/login")
-    fun login(@RequestBody @Validated loginRequest: LoginRequest) =
-        userService.login(loginRequest)
+    @PostMapping("/login-teacher")
+    fun loginTeacher(@RequestBody @Validated loginRequest: LoginRequest): Mono<LoginResponse> =
+        userService.loginTeacher(loginRequest)
 
-    @PostMapping("/register")
+    @PostMapping("/login-student")
+    fun loginStudent(@RequestBody @Validated loginRequest: LoginRequest): Mono<LoginResponse> =
+        userService.loginStudent(loginRequest)
+
+    @PostMapping("/register-student")
     @ResponseStatus(CREATED)
-    fun register(@RequestBody @Validated studentRequest: Mono<StudentRequest>) =
-        userService.register(studentRequest)
+    fun registerStudent(@RequestBody studentRequest: StudentRequest): Mono<StudentResponse> =
+        userService.registerStudent(studentRequest)
 
-    @PostMapping("/refresh-token")
-    fun refreshToken(@RequestBody @Validated refreshToken: RefreshTokenRequest) =
-        userService.refreshToken(refreshToken)
+    @PostMapping("/register-teacher")
+    @ResponseStatus(CREATED)
+    fun registerTeacher(@RequestBody teacherRequest: TeacherRequest): Mono<TeacherResponse> =
+        userService.registerTeacher(teacherRequest)
 
-//    @GetMapping("/student")
-//    @PreAuthorize("hasRole('STUDENT')")
-//    fun test() = Flux.just("adasd", "asdas", "eqweqwe")
-//
-//    @GetMapping("/teacher")
-//    @PreAuthorize("hasRole('TEACHER')")
-//    fun test1() = Flux.just("teacher", "teacher", "student")
+    @PostMapping("/refresh-token-teacher")
+    fun refreshTokenTeacher(@RequestBody @Validated refreshToken: RefreshTokenRequest): Mono<LoginResponse> =
+        userService.refreshTokenTeacher(refreshToken)
+
+    @PostMapping("/refresh-token-student")
+    fun refreshTokenStudent(@RequestBody @Validated refreshToken: RefreshTokenRequest): Mono<LoginResponse> =
+        userService.refreshTokenStudent(refreshToken)
 }

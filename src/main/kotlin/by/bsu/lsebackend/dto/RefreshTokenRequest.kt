@@ -1,4 +1,6 @@
 package by.bsu.lsebackend.dto
 
-class RefreshTokenRequest(val refreshToken: String) {
+import by.bsu.lsebackend.entity.UserType
+
+class RefreshTokenRequest(val refreshToken: String, val userType: UserType) {
 }

@@ -1,6 +1,6 @@
 package by.bsu.lsebackend.security
 
-import by.bsu.lsebackend.entity.Student
+import by.bsu.lsebackend.entity.BaseUser
 import by.bsu.lsebackend.properties.JwtProperties
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
@@ -30,11 +30,12 @@ class TokenService(private val jwtProperties: JwtProperties) {
             .parseClaimsJws(token)
             .body!!
 
-    fun generateAccessToken(user: Student): String = generateToken(user, jwtProperties.accessTokenExpiration)
+    fun <T : BaseUser> generateAccessToken(user: T): String =
+        generateToken(user, jwtProperties.accessTokenExpiration)
 
-    fun generateRefreshToken(user: Student): String = generateToken(user, jwtProperties.refreshTokenExpiration)
+    fun <T : BaseUser> generateRefreshToken(user: T): String = generateToken(user, jwtProperties.refreshTokenExpiration)
 
-    private fun generateToken(user: Student, expiration: Duration): String {
+    private fun <T : BaseUser> generateToken(user: T, expiration: Duration): String {
         val creationDate = Date()
         val expirationDate = Date(creationDate.time + expiration.toMillis())
         return Jwts.builder()

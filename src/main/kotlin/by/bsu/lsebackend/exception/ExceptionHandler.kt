@@ -1,7 +1,12 @@
 package by.bsu.lsebackend.exception
 
+import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.JwtException
+import io.jsonwebtoken.MalformedJwtException
+import io.jsonwebtoken.UnsupportedJwtException
+import io.jsonwebtoken.security.SignatureException
 import org.springframework.core.codec.DecodingException
+import org.springframework.http.HttpStatus
 import org.springframework.http.HttpStatus.BAD_REQUEST
 import org.springframework.http.HttpStatus.UNAUTHORIZED
 import org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY
@@ -45,6 +50,22 @@ class ExceptionHandler {
         )
     }
 
+    @ExceptionHandler(
+        ExpiredJwtException::class,
+        UnsupportedJwtException::class,
+        MalformedJwtException::class,
+        SignatureException::class
+    )
+    @ResponseStatus(UNAUTHORIZED)
+    fun jwtExceptionsHandling(ex: RuntimeException): Mono<ResponseStatusException> {
+        return Mono.error(
+            ResponseStatusException(
+                UNAUTHORIZED,
+                ex.message
+            )
+        )
+    }
+
 //    @ExceptionHandler(AuthenticationException::class)
 //    @ResponseStatus(UNAUTHORIZED)
 //    fun authenticationException(ex: AuthenticationException): Mono<ResponseStatusException> {
@@ -69,9 +90,9 @@ class ExceptionHandler {
 
     // todo: is it needed?
 
-//    @ExceptionHandler(Exception::class)
-//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-//    fun serverExceptionHandler(ex: Exception): String? {
-//        return ex.message
-//    }
+    @ExceptionHandler(Throwable::class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    fun serverExceptionHandler(ex: Throwable): String? {
+        return ex.message
+    }
 }

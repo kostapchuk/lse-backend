@@ -12,6 +12,7 @@ import org.springframework.scheduling.annotation.EnableAsync
 // todo add validation for input
 // todo try to convert TokenService to functional style
 // write tests
+// right now jwt expired is 500 error https://www.baeldung.com/spring-webflux-errors
 
 @SpringBootApplication
 @EnableAsync
