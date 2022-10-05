@@ -7,4 +7,5 @@ import reactor.core.publisher.Mono
 interface StudentRepository : ReactiveMongoRepository<Student, String> {
 
     fun findByEmail(email: String): Mono<Student>
+    fun findByRefreshToken(refreshToken: String): Mono<Student>
 }

@@ -18,8 +18,11 @@ open class BaseUser(
     val email: String,
 
     @Field("password")
-    val password: String,
+    var password: String,
 
     @Field("role")
-    val role: String, // create converter https://www.mongodb.com/community/forums/t/cannot-store-java-enum-values-in-mongodb/99719/3
+    val role: Role,
+
+    @Field("refreshToken")
+    var refreshToken: String? = null,
 )

@@ -1,5 +1,6 @@
 package by.bsu.lsebackend.dto
 
+import by.bsu.lsebackend.entity.Role
 import com.fasterxml.jackson.annotation.JsonProperty
 
 data class StudentResponse(
@@ -20,4 +21,7 @@ data class StudentResponse(
 
     @JsonProperty("course")
     val course: Int,
+
+    @JsonProperty("role")
+    val role: String = Role.ROLE_STUDENT.name,
 )

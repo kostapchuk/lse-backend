@@ -8,12 +8,15 @@ logging.level.org.hibernate:
   SQL: error
   type.descriptor.sql.BasicBinder: error
 
-email.sender:
-  username: ${EMAIL_SENDER_USERNAME}
-  password: ${EMAIL_SENDER_PASSWORD}
+email:
+  sender:
+    username: ${EMAIL_SENDER_USERNAME}
+    password: ${EMAIL_SENDER_PASSWORD}
 
 cors.origins: ${CORS_ORIGIN}
 
-rsa:
-  private-key: classpath:certs/private.pem
-  public-key: classpath:certs/public.pem
+jwt:
+  secret: ${JWT_SECRET}
+  iteration: 12
+  access-token-expiration: 10m
+  refresh-token-expiration: 300m

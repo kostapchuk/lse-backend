@@ -1,7 +1,9 @@
 package by.bsu.lsebackend.exception
 
+import io.jsonwebtoken.JwtException
 import org.springframework.core.codec.DecodingException
 import org.springframework.http.HttpStatus.BAD_REQUEST
+import org.springframework.http.HttpStatus.UNAUTHORIZED
 import org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -15,15 +17,9 @@ import reactor.core.publisher.Mono
 @RestControllerAdvice
 class ExceptionHandler {
 
-    @ExceptionHandler(DecodingException::class)
+    @ExceptionHandler(MethodArgumentNotValidException::class, DecodingException::class)
     @ResponseStatus(BAD_REQUEST)
-    fun decodingExceptionHandler(ex: DecodingException): Mono<ResponseStatusException> {
-        return Mono.error(ResponseStatusException(BAD_REQUEST, ex.message))
-    }
-
-    @ExceptionHandler(MethodArgumentNotValidException::class)
-    @ResponseStatus(BAD_REQUEST)
-    fun methodArgumentNotValidExceptionHandler(ex: MethodArgumentNotValidException): Mono<ResponseStatusException> {
+    fun methodArgumentNotValidOrDecodingExceptionHandler(ex: RuntimeException): Mono<ResponseStatusException> {
         return Mono.error(ResponseStatusException(BAD_REQUEST, ex.message))
     }
 
@@ -32,11 +28,44 @@ class ExceptionHandler {
     fun webExchangeBindExceptionHandler(ex: WebExchangeBindException): Mono<ResponseStatusException> {
         return Mono.error(
             ResponseStatusException(
-                BAD_REQUEST,
+                UNPROCESSABLE_ENTITY,
                 ex.bindingResult.fieldErrors.map { it.field to it.defaultMessage }.joinToString()
             )
         )
     }
+
+    @ExceptionHandler(JwtException::class)
+    @ResponseStatus(UNAUTHORIZED)
+    fun jwtException(ex: JwtException): Mono<ResponseStatusException> {
+        return Mono.error(
+            ResponseStatusException(
+                UNAUTHORIZED,
+                ex.message
+            )
+        )
+    }
+
+//    @ExceptionHandler(AuthenticationException::class)
+//    @ResponseStatus(UNAUTHORIZED)
+//    fun authenticationException(ex: AuthenticationException): Mono<ResponseStatusException> {
+//        return Mono.error(
+//            ResponseStatusException(
+//                UNAUTHORIZED,
+//                "some custom msg"
+//            )
+//        )
+//    }
+//
+//    @ExceptionHandler(AccessDeniedException::class)
+//    @ResponseStatus(FORBIDDEN)
+//    fun accessDeniedException(ex: AccessDeniedException): Mono<ResponseStatusException> {
+//        return Mono.error(
+//            ResponseStatusException(
+//                FORBIDDEN,
+//                "some custom msg FORBIDDEN"
+//            )
+//        )
+//    }
 
     // todo: is it needed?
 
