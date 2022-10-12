@@ -1,13 +1,13 @@
 package by.bsu.lsebackend.extension
 
+import by.bsu.lsebackend.dto.RegisterResponse
 import by.bsu.lsebackend.dto.StudentRequest
-import by.bsu.lsebackend.dto.StudentResponse
 import by.bsu.lsebackend.dto.TeacherRequest
-import by.bsu.lsebackend.dto.TeacherResponse
+import by.bsu.lsebackend.entity.BaseUser
 import by.bsu.lsebackend.entity.Student
 import by.bsu.lsebackend.entity.Teacher
 
-fun StudentRequest.toEntity() = Student(
+fun StudentRequest.toEntity(): Student = Student(
     firstName = this.firstName,
     lastName = this.lastName,
     email = this.email,
@@ -15,14 +15,15 @@ fun StudentRequest.toEntity() = Student(
     group = this.group,
     faculty = this.faculty,
     course = this.course,
-    role = this.role
+    role = this.role,
+    userType = this.userType
 )
 
-fun Student.toResponse() = StudentResponse(
-    firstName, lastName, email, faculty, group, course,
+fun <T : BaseUser> T.toResponse(): RegisterResponse = RegisterResponse(
+    firstName, lastName, email,
 )
 
-fun TeacherRequest.toEntity() = Teacher(
+fun TeacherRequest.toEntity(): Teacher = Teacher(
     firstName = this.firstName,
     lastName = this.lastName,
     email = this.email,
@@ -33,6 +34,3 @@ fun TeacherRequest.toEntity() = Teacher(
     userType = this.userType
 )
 
-fun Teacher.toResponse() = TeacherResponse(
-    firstName, lastName, email, faculty, yearsOfExperience
-)

@@ -2,7 +2,7 @@ package by.bsu.lsebackend.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
-open class UserResponse(
+class RegisterResponse(
     @JsonProperty("firstName")
     val firstName: String,
 
@@ -11,10 +11,4 @@ open class UserResponse(
 
     @JsonProperty("email")
     val email: String,
-
-    @JsonProperty("faculty")
-    val faculty: String,
-
-    @JsonProperty("role")
-    val role: String,
 )

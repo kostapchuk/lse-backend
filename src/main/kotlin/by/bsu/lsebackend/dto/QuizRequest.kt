@@ -24,7 +24,7 @@ class QuizRequest(
     val items: List<QuizItemRequest>,
     @JsonProperty("maxScore", required = true)
     @field:Min(value = 1, message = "Max score should not be less than {value}")
-    @field:Max(value = 2147483647, message = "Max score should not be greater than {value}")
+    @field:Max(value = Int.MAX_VALUE.toLong(), message = "Max score should not be greater than {value}")
     @field:NotNull(message = "Max score should present")
     val maxScore: Int,
 ) {
@@ -55,7 +55,7 @@ class QuizRequest(
             val multipleChoice: Boolean = false,
             @JsonProperty("cost", required = true)
             @field:Min(value = 1, message = "Cost should not be less than {value}")
-            @field:Max(value = 2147483647, message = "Cost should not be greater than {value}")
+            @field:Max(value = Int.MAX_VALUE.toLong(), message = "Cost should not be greater than {value}")
             @field:NotNull(message = "Cost should present")
             val cost: Int,
         )

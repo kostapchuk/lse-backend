@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank
 // todo: add validation like in QuizRequest
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class UserResultRequest(
+data class UserQuizRequest(
     @field:NotBlank(message = "First name should present")
     @JsonProperty("firstName")
     val firstName: String,

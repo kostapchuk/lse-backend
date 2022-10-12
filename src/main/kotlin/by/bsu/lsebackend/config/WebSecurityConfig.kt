@@ -14,6 +14,9 @@ import org.springframework.security.core.AuthenticationException
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.server.SecurityWebFilterChain
+import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.reactive.CorsConfigurationSource
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource
 import org.springframework.web.server.ServerWebExchange
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -56,16 +59,26 @@ class WebSecurityConfig(
             .securityContextRepository(securityContextRepository)
             .authorizeExchange()
             .pathMatchers(
-                "/login-teacher",
                 "/register-teacher",
-                "/refresh-token-teacher",
-                "/login-student",
                 "/register-student",
-                "/refresh-token-student"
+                "/refresh-token",
+                "/login",
             ).permitAll()
             .anyExchange().authenticated()
             .and()
             .build()
         // todo mvc matchers and exact method name (get, post)
+    }
+
+    @Bean
+    fun corsConfigurationSource(): CorsConfigurationSource {
+        val configuration = CorsConfiguration().apply {
+            allowedOrigins = listOf("*")
+            allowedMethods = listOf("*")
+            allowedHeaders = listOf("*")
+        }
+        return UrlBasedCorsConfigurationSource().apply {
+            registerCorsConfiguration("/**", configuration)
+        }
     }
 }

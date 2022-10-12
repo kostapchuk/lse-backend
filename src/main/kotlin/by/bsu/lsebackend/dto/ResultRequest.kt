@@ -13,5 +13,5 @@ data class ResultRequest(
     val quizResultRequest: QuizResultRequest,
     @JsonProperty("user")
     @field:Valid
-    val userResultRequest: UserResultRequest,
+    val userQuizRequest: UserQuizRequest,
 )

@@ -23,11 +23,11 @@ class ResultService(
             .map {
                 QuizResult(
                     quizName = it.name,
-                    firstName = resultRequest.userResultRequest.firstName,
-                    lastName = resultRequest.userResultRequest.lastName,
-                    group = resultRequest.userResultRequest.group,
-                    faculty = resultRequest.userResultRequest.faculty,
-                    email = resultRequest.userResultRequest.email,
+                    firstName = resultRequest.userQuizRequest.firstName,
+                    lastName = resultRequest.userQuizRequest.lastName,
+                    group = resultRequest.userQuizRequest.group,
+                    faculty = resultRequest.userQuizRequest.faculty,
+                    email = resultRequest.userQuizRequest.email,
                     score = it.items.stream()
                         .map { item -> retrieveScore(item, resultRequest.quizResultRequest.items) }
                         .reduce { acc, next -> acc + next }
