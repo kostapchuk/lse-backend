@@ -15,9 +15,8 @@ import reactor.core.publisher.Mono
 class QuizService(private val quizRepository: QuizRepository) {
 
     @Cacheable("quizzes")
-    fun findAll(): Flux<QuizResponse> = quizRepository.findAll().map {
-        it.toResponse()
-    }
+    fun findAll(): Flux<QuizResponse> = quizRepository.findAll()
+        .map { it.toResponse() }
 
     fun create(quiz: QuizRequest): Mono<Quiz> = quizRepository.insert(quiz.toEntity())
 }

@@ -13,8 +13,7 @@ class Teacher(
     password: String,
     role: Role,
     userType: UserType,
+    faculty: String,
     @Field("yearsOfExperience")
     val yearsOfExperience: Int,
-    @Field("faculty")
-    val faculty: String,
-) : BaseUser(id, firstName, lastName, email, password, role, userType)
+) : BaseUser(id, firstName, lastName, email, password, role, userType, faculty)

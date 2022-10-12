@@ -33,7 +33,8 @@ class TokenService(private val jwtProperties: JwtProperties) {
     fun <T : BaseUser> generateAccessToken(user: T): String =
         generateToken(user, jwtProperties.accessTokenExpiration)
 
-    fun <T : BaseUser> generateRefreshToken(user: T): String = generateToken(user, jwtProperties.refreshTokenExpiration)
+    fun <T : BaseUser> generateRefreshToken(user: T): String =
+        generateToken(user, jwtProperties.refreshTokenExpiration)
 
     private fun <T : BaseUser> generateToken(user: T, expiration: Duration): String {
         val creationDate = Date()

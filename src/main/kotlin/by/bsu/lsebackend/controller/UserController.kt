@@ -19,17 +19,17 @@ import reactor.core.publisher.Mono
 class UserController(private val userService: UserService) {
 
     @PostMapping("/login")
-    fun loginTeacher(@RequestBody @Validated loginRequest: LoginRequest): Mono<LoginResponse> =
+    fun login(@RequestBody @Validated loginRequest: LoginRequest): Mono<LoginResponse> =
         userService.login(loginRequest)
 
     @PostMapping("/register-student")
     @ResponseStatus(CREATED)
-    fun registerStudent(@RequestBody studentRequest: StudentRequest): Mono<RegisterResponse> =
+    fun registerStudent(@RequestBody @Validated studentRequest: StudentRequest): Mono<RegisterResponse> =
         userService.registerStudent(studentRequest)
 
     @PostMapping("/register-teacher")
     @ResponseStatus(CREATED)
-    fun registerTeacher(@RequestBody teacherRequest: TeacherRequest): Mono<RegisterResponse> =
+    fun registerTeacher(@RequestBody @Validated teacherRequest: TeacherRequest): Mono<RegisterResponse> =
         userService.registerTeacher(teacherRequest)
 
     @PostMapping("/refresh-token-teacher")

@@ -1,10 +1,14 @@
 package by.bsu.lsebackend.config
 
+import by.bsu.lsebackend.extension.star
 import by.bsu.lsebackend.properties.JwtProperties
 import by.bsu.lsebackend.security.AuthenticationManager
 import by.bsu.lsebackend.security.SecurityContextRepository
 import org.springframework.context.annotation.Bean
 import org.springframework.core.io.buffer.DataBuffer
+import org.springframework.http.HttpMethod.GET
+import org.springframework.http.HttpMethod.OPTIONS
+import org.springframework.http.HttpMethod.POST
 import org.springframework.http.HttpStatus
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity
@@ -73,9 +77,9 @@ class WebSecurityConfig(
     @Bean
     fun corsConfigurationSource(): CorsConfigurationSource {
         val configuration = CorsConfiguration().apply {
-            allowedOrigins = listOf("*")
-            allowedMethods = listOf("*")
-            allowedHeaders = listOf("*")
+            allowedOrigins = listOf("*") // todo move to config
+            allowedMethods = listOf(GET.name, POST.name, OPTIONS.name)
+            allowedHeaders = listOf(String.star()) // todo investigate what headers are required
         }
         return UrlBasedCorsConfigurationSource().apply {
             registerCorsConfiguration("/**", configuration)

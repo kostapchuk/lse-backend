@@ -5,6 +5,8 @@ import org.springframework.boot.context.properties.ConstructorBinding
 import org.springframework.validation.annotation.Validated
 import javax.validation.constraints.NotBlank
 
+// todo add messages and test messages
+
 @Validated
 @ConstructorBinding
 @ConfigurationProperties(prefix = "email.sender")

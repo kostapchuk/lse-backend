@@ -26,6 +26,9 @@ open class BaseUser(
     @Field("userType")
     val userType: UserType,
 
+    @Field("faculty")
+    val faculty: String,
+
     @Field("refreshToken")
     var refreshToken: String? = null,
 )

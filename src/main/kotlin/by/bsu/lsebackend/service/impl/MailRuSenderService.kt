@@ -23,14 +23,7 @@ class MailRuSenderService(
         message: String,
         subject: String,
     ) {
-        val session = Session.getInstance(
-            mailRuSmtpProperties,
-            object : Authenticator() {
-                override fun getPasswordAuthentication(): PasswordAuthentication {
-                    return PasswordAuthentication(emailSenderProperties.username, emailSenderProperties.password)
-                }
-            }
-        )
+        val session = createSession()
         val mimeMsg = MimeMessage(session).apply {
             this.addRecipient(Message.RecipientType.TO, InternetAddress(to))
             this.subject = subject
@@ -39,4 +32,13 @@ class MailRuSenderService(
         }
         Transport.send(mimeMsg)
     }
+
+    private fun createSession(): Session = Session.getInstance(
+        mailRuSmtpProperties,
+        object : Authenticator() {
+            override fun getPasswordAuthentication(): PasswordAuthentication {
+                return PasswordAuthentication(emailSenderProperties.username, emailSenderProperties.password)
+            }
+        }
+    )
 }

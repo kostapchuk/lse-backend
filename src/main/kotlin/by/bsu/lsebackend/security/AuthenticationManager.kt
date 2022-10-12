@@ -13,10 +13,12 @@ private const val ROLE = "role"
 class AuthenticationManager(private val tokenService: TokenService) : ReactiveAuthenticationManager {
     override fun authenticate(authentication: Authentication): Mono<Authentication> {
         val authToken = authentication.credentials.toString()
-        return tokenService.isValid(authToken).map {
-            val claims = tokenService.retrieveClaims(authToken)
-            val roles: List<*> = claims.get(ROLE, ArrayList::class.java)
-            val authenticationToken: Authentication = UsernamePasswordAuthenticationToken(
+        return tokenService.isValid(authToken)
+            .map {
+                val claims = tokenService.retrieveClaims(authToken)
+                claims.get(ROLE, ArrayList::class.java)
+            }.map { roles ->
+                val authenticationToken: Authentication = UsernamePasswordAuthenticationToken(
                 tokenService.retrieveUsername(authToken),
                 null,
                 roles.map { Role.valueOf(it.toString()).getAuthority() }
