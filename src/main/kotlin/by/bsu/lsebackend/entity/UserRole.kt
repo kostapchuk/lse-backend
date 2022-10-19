@@ -2,7 +2,7 @@ package by.bsu.lsebackend.entity
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 
-enum class Role {
+enum class UserRole {
     ROLE_TEACHER,
     ROLE_STUDENT;
 

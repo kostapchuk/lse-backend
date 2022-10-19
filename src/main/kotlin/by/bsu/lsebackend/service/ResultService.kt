@@ -7,35 +7,35 @@ import by.bsu.lsebackend.entity.QuizResult
 import by.bsu.lsebackend.extension.equalsIgnoreOrder
 import by.bsu.lsebackend.repository.QuizRepository
 import by.bsu.lsebackend.repository.ResultRepository
+import by.bsu.lsebackend.repository.UserRepositoryFacade
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+import java.time.LocalDateTime
 
 @Service
 class ResultService(
     private val quizRepository: QuizRepository,
     private val senderService: SenderService,
     private val resultRepository: ResultRepository,
+    private val userRepositoryFacade: UserRepositoryFacade,
 ) {
 
     fun check(resultRequest: ResultRequest): Mono<Int> {
         return quizRepository.findById(resultRequest.quizResultRequest.quizId)
-            .map {
-                QuizResult(
-                    quizName = it.name,
-                    firstName = resultRequest.userQuizRequest.firstName,
-                    lastName = resultRequest.userQuizRequest.lastName,
-                    group = resultRequest.userQuizRequest.group,
-                    faculty = resultRequest.userQuizRequest.faculty,
-                    email = resultRequest.userQuizRequest.email,
-                    score = it.items.stream()
-                        .map { item -> retrieveScore(item, resultRequest.quizResultRequest.items) }
-                        .reduce { acc, next -> acc + next }
-                        .orElse(0),
-                    maxScore = it.maxScore,
-                )
-            }
-            .flatMap {
+            .flatMap { (_, name, items, maxScore, createdDate): Quiz ->
+                userRepositoryFacade.findById(resultRequest.userId).map {
+                    QuizResult(
+                        quizName = name,
+                        score = items.stream()
+                            .map { item -> retrieveScore(item, resultRequest.quizResultRequest.items) }
+                            .reduce { acc, next -> acc + next }.orElse(0),
+                        maxScore = maxScore,
+                        createdDate = LocalDateTime.now(),
+                        email = it.email
+                    )
+                }
+            }.flatMap {
                 resultRepository.insert(it)
             }.flatMap {
 //                senderService.send(
@@ -49,19 +49,14 @@ class ResultService(
 
     fun findWithTailableCursorBy(): Flux<QuizResult> = resultRepository.findWithTailableCursorBy()
 
+    fun findAllByEmail(email: String, page: Long, size: Long): Flux<QuizResult> =
+        resultRepository.findAllByEmail(email).sort(Comparator.comparing(QuizResult::createdDate).reversed())
+            .skip(page * size).take(size)
+
     private fun retrieveScore(
         quizItem: Quiz.QuizItem,
         quizItemRequest: List<QuizResultRequest.QuizItemRequest>,
-    ): Int =
-        quizItemRequest.stream()
-            .filter { it.questionId == quizItem.question.id }
-            .filter {
-                it.answerIds.equalsIgnoreOrder(
-                    quizItem.answers.filter { a -> a.correct }
-                        .map(Quiz.QuizItem.Answer::id)
-                )
-            }
-            .map { quizItem.question.cost }
-            .findFirst()
-            .orElse(0)
+    ): Int = quizItemRequest.stream().filter { it.questionId == quizItem.question.id }.filter {
+        it.answerIds.equalsIgnoreOrder(quizItem.answers.filter { a -> a.correct }.map(Quiz.QuizItem.Answer::id))
+    }.map { quizItem.question.cost }.findFirst().orElse(0)
 }

@@ -21,7 +21,7 @@ open class BaseUser(
     var password: String,
 
     @Field("role")
-    val role: Role,
+    val userRole: UserRole,
 
     @Field("userType")
     val userType: UserType,

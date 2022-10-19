@@ -1,6 +1,6 @@
 package by.bsu.lsebackend.dto
 
-import by.bsu.lsebackend.entity.Role
+import by.bsu.lsebackend.entity.UserRole
 import by.bsu.lsebackend.entity.UserType
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
@@ -11,9 +11,10 @@ import javax.validation.constraints.NotNull
 // todo add validation
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-open class UserRequest(
+abstract class UserRequest<E>(
     @JsonProperty("firstName")
     @field:NotBlank
+    // todo add size for all fields, configure in frontend also
     val firstName: String,
     @JsonProperty("lastName")
     @field:NotBlank
@@ -30,8 +31,10 @@ open class UserRequest(
     val faculty: String,
     @JsonProperty("role")
     @field:NotNull
-    val role: Role,
+    val userRole: UserRole,
     @JsonProperty("userType")
     @field:NotNull
     val userType: UserType,
-)
+) {
+    abstract fun toEntity(): E
+}

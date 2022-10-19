@@ -1,6 +1,6 @@
 package by.bsu.lsebackend.security
 
-import by.bsu.lsebackend.entity.Role
+import by.bsu.lsebackend.entity.UserRole
 import org.springframework.security.authentication.ReactiveAuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
@@ -19,12 +19,11 @@ class AuthenticationManager(private val tokenService: TokenService) : ReactiveAu
                 claims.get(ROLE, ArrayList::class.java)
             }.map { roles ->
                 val authenticationToken: Authentication = UsernamePasswordAuthenticationToken(
-                tokenService.retrieveUsername(authToken),
-                null,
-                roles.map { Role.valueOf(it.toString()).getAuthority() }
-            )
-            return@map authenticationToken
-        }.switchIfEmpty(Mono.empty())
+                    tokenService.retrieveUsername(authToken),
+                    null,
+                    roles.map { UserRole.valueOf(it.toString()).getAuthority() }
+                )
+                return@map authenticationToken
+            }.switchIfEmpty(Mono.empty())
     }
 }
-

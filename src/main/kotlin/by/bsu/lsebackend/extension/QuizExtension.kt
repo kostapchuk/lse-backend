@@ -3,11 +3,13 @@ package by.bsu.lsebackend.extension
 import by.bsu.lsebackend.dto.QuizRequest
 import by.bsu.lsebackend.dto.QuizResponse
 import by.bsu.lsebackend.entity.Quiz
+import java.time.LocalDateTime
 
 fun Quiz.toResponse(): QuizResponse = QuizResponse(
     this.id,
     this.name,
-    this.items.map { it.toResponse() }
+    this.items.map { it.toResponse() },
+    this.createdDate,
 )
 
 fun Quiz.QuizItem.toResponse(): QuizResponse.QuizItemResponse = QuizResponse.QuizItemResponse(
@@ -31,7 +33,8 @@ fun Quiz.QuizItem.Question.toResponse(): QuizResponse.QuizItemResponse.QuestionR
 fun QuizRequest.toEntity(): Quiz = Quiz(
     name = this.name,
     items = this.items.map { it.toEntity() },
-    maxScore = this.maxScore
+    maxScore = this.maxScore,
+    createdDate = LocalDateTime.now()
 )
 
 fun QuizRequest.QuizItemRequest.toEntity(): Quiz.QuizItem = Quiz.QuizItem(

@@ -1,12 +1,18 @@
 package by.bsu.lsebackend.dto
 
-import by.bsu.lsebackend.entity.Role
+import by.bsu.lsebackend.entity.UserRole
 import by.bsu.lsebackend.entity.UserType
+import com.fasterxml.jackson.annotation.JsonProperty
 
 class LoginResponse(
-    val accessToken: String,
-    val refreshToken: String?,
+    @JsonProperty("accessToken")
+    val accessToken: TokenDto,
+    @JsonProperty("refreshToken")
+    val refreshToken: TokenDto,
+    @JsonProperty("id")
     val id: String,
-    userType: UserType,
-    userRole: Role,
+    @JsonProperty("userType")
+    val userType: UserType,
+    @JsonProperty("userRole")
+    val userRole: UserRole,
 )

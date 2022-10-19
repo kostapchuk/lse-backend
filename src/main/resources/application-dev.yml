@@ -9,7 +9,7 @@ spring:
         events.log.LOG_QUERIES_SLOWER_THAN_MS: 1
   cache.caffeine.spec: maximumSize=500, expireAfterAccess=30s
 logging.level:
-    org.hibernate.stat: DEBUG
+  org.hibernate.stat: DEBUG
 
 server.error.include-message: always
 
@@ -23,6 +23,6 @@ cors.origins: ${CORS_ORIGIN}
 jwt:
   secret: ${JWT_SECRET}
   iteration: 12
-  access-token-expiration: 10m
+  access-token-expiration: 50m
   refresh-token-expiration: 300m
 

@@ -1,39 +1,40 @@
 package by.bsu.lsebackend.controller
 
-import by.bsu.lsebackend.dto.LoginRequest
-import by.bsu.lsebackend.dto.LoginResponse
-import by.bsu.lsebackend.dto.RefreshTokenRequest
+import by.bsu.lsebackend.dto.DeleteUserRequest
 import by.bsu.lsebackend.dto.RegisterResponse
 import by.bsu.lsebackend.dto.StudentRequest
 import by.bsu.lsebackend.dto.TeacherRequest
 import by.bsu.lsebackend.service.UserService
 import org.springframework.http.HttpStatus.CREATED
+import org.springframework.http.HttpStatus.NO_CONTENT
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.validation.annotation.Validated
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import reactor.core.publisher.Mono
 
 @RestController
+@RequestMapping("/api/v1/users")
 class UserController(private val userService: UserService) {
 
-    @PostMapping("/login")
-    fun login(@RequestBody @Validated loginRequest: LoginRequest): Mono<LoginResponse> =
-        userService.login(loginRequest)
+    @PostMapping("/register-teacher")
+//    @PreAuthorize("hasRole('TEACHER')")
+    @ResponseStatus(CREATED)
+    fun registerTeacher(@RequestBody @Validated request: TeacherRequest): Mono<RegisterResponse> =
+        userService.register(request)
 
     @PostMapping("/register-student")
     @ResponseStatus(CREATED)
-    fun registerStudent(@RequestBody @Validated studentRequest: StudentRequest): Mono<RegisterResponse> =
-        userService.registerStudent(studentRequest)
+    fun registerStudent(@RequestBody @Validated request: StudentRequest): Mono<RegisterResponse> =
+        userService.register(request)
 
-    @PostMapping("/register-teacher")
-    @ResponseStatus(CREATED)
-    fun registerTeacher(@RequestBody @Validated teacherRequest: TeacherRequest): Mono<RegisterResponse> =
-        userService.registerTeacher(teacherRequest)
-
-    @PostMapping("/refresh-token-teacher")
-    fun refreshTokenTeacher(@RequestBody @Validated refreshToken: RefreshTokenRequest): Mono<LoginResponse> =
-        userService.refreshToken(refreshToken)
-
+    @DeleteMapping
+    @ResponseStatus(NO_CONTENT)
+    @PreAuthorize("hasRole('TEACHER')")
+    fun delete(@RequestBody @Validated request: DeleteUserRequest): Mono<Void> =
+        userService.delete(request)
 }

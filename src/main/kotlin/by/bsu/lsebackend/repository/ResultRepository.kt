@@ -11,4 +11,6 @@ interface ResultRepository : ReactiveMongoRepository<QuizResult, String> {
 
     @Tailable
     fun findWithTailableCursorBy(): Flux<QuizResult>
+
+    fun findAllByEmail(email: String): Flux<QuizResult>
 }

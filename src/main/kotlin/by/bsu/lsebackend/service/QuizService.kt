@@ -15,8 +15,18 @@ import reactor.core.publisher.Mono
 class QuizService(private val quizRepository: QuizRepository) {
 
     @Cacheable("quizzes")
-    fun findAll(): Flux<QuizResponse> = quizRepository.findAll()
-        .map { it.toResponse() }
+    fun findAllPaged(page: Long, size: Long): Flux<QuizResponse> =
+        quizRepository.findAll()
+            .sort(Comparator.comparing(Quiz::createdDate).reversed())
+            .skip(page * size)
+            .take(size)
+            .map { it.toResponse() }
+//            .replay(10)
+//            .autoConnect(0)
 
-    fun create(quiz: QuizRequest): Mono<Quiz> = quizRepository.insert(quiz.toEntity())
+    fun create(quiz: QuizRequest): Mono<Quiz> = quizRepository.save(quiz.toEntity())
+
+    @Cacheable("topics")
+    fun findTop20Topics(): Mono<List<String>> =
+        quizRepository.findTop20ByOrderByCreatedDate().map { it.name }.collectList()
 }

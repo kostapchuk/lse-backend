@@ -8,12 +8,12 @@ import org.springframework.boot.runApplication
 import org.springframework.cache.annotation.EnableCaching
 import org.springframework.scheduling.annotation.EnableAsync
 
-// todo separate into 2 entities: teacher and student
+// todo test responses to have body (status, timestamp, message)
+// todo log exceptions
 // todo add validation for input
 // todo try to convert TokenService to functional style
 // todo write tests
-// todo right now jwt expired is 500 error https://www.baeldung.com/spring-webflux-errors
-// todo test jwt responses properly (validation, expiration, etc.)
+// todo add mono/flux to parameter in controllers
 
 @SpringBootApplication
 @EnableAsync

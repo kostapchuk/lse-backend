@@ -11,11 +11,11 @@ class Student(
     lastName: String,
     email: String,
     password: String,
-    role: Role,
+    userRole: UserRole,
     userType: UserType,
     faculty: String,
     @Field("group")
     val group: String,
     @Field("course")
     val course: Int,
-) : BaseUser(id, firstName, lastName, email, password, role, userType, faculty)
+) : BaseUser(id, firstName, lastName, email, password, userRole, userType, faculty)

@@ -5,5 +5,5 @@ import org.springframework.scheduling.annotation.Async
 interface SenderService {
 
     @Async
-    fun send(to: String, message: String, subject: String,)
+    fun send(to: String, message: String, subject: String)
 }
