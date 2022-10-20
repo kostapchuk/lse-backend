@@ -8,8 +8,11 @@ spring:
       session:
         events.log.LOG_QUERIES_SLOWER_THAN_MS: 1
   cache.caffeine.spec: maximumSize=500, expireAfterAccess=30s
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE}
 logging.level:
   org.hibernate.stat: DEBUG
+
 
 server.error.include-message: always
 

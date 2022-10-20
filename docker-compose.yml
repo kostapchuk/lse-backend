@@ -9,3 +9,18 @@ services:
     restart: always
     environment:
       MONGODB_DATABASE: ${MONGO_DB_NAME}
+
+  lse-backend:
+    image: qjnzero/lse-backend:0.1.0
+    ports:
+      - "8080:8080"
+    environment:
+      JWT_SECRET: ${JWT_SECRET}
+      MONGO_DB_NAME: ${MONGO_DB_NAME}
+      MONGO_HOST: ${MONGO_HOST}
+      MONGO_USERNAME: ${MONGO_USERNAME}
+      MONGO_PORT: ${MONGO_PORT}
+      EMAIL_SENDER_PASSWORD: ${EMAIL_SENDER_PASSWORD}
+      EMAIL_SENDER_USERNAME: ${EMAIL_SENDER_USERNAME}
+      CORS_ORIGIN: ${CORS_ORIGIN}
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
