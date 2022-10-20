@@ -44,7 +44,10 @@ class WebSecurityConfig(
                 "/api/v1/users/register-teacher",
                 "/auth/refresh-token",
                 "/auth/login",
-                "/api/v1/quizzes/topics"
+                "/api/v1/quizzes/topics",
+                "/webjars/swagger-ui/**", "/webjars/swagger-ui.html",
+                "/swagger-ui/**", "/swagger-ui.html",
+                "/v3/api-docs/**",
             ).permitAll()
             .anyExchange().authenticated()
             .and()
