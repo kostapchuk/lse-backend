@@ -24,7 +24,7 @@ class ResultService(
     fun check(resultRequest: ResultRequest): Mono<Int> {
         return quizRepository.findById(resultRequest.quizResultRequest.quizId)
             .flatMap { (_, name, items, maxScore, createdDate): Quiz ->
-                userRepositoryFacade.findById(resultRequest.userId).map {
+                userRepositoryFacade.findById(resultRequest.userId, resultRequest.userType).map {
                     QuizResult(
                         quizName = name,
                         score = items.stream()

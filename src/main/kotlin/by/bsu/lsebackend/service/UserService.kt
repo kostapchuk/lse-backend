@@ -21,7 +21,7 @@ class UserService(
     fun <T : UserRequest<out BaseUser>> register(request: T): Mono<RegisterResponse> =
         userRepositoryFacade.existsByEmail(request.email)
             .flatMap<RegisterResponse> {
-                Mono.error(BadRequestException("User with ${request.email} already exists"))
+                Mono.error(BadRequestException("User with email ${request.email} already exists"))
             }.switchIfEmpty(
                 Mono.just(request).map {
                     it.toEntity()

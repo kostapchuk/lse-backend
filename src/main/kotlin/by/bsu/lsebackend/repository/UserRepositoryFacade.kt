@@ -39,9 +39,10 @@ class UserRepositoryFacade(
         }
     }
 
-    fun findById(userId: String): Mono<BaseUser> =
-        baseUserRepository.findById(userId)
-            .switchIfEmpty(Mono.error(BadRequestException("User with $userId does not exist")))
+    fun findById(id: String, userType: UserType): Mono<out BaseUser> {
+        return typeToRepositories[userType]!!.findByIdAndUserType(id, userType)
+            .switchIfEmpty(Mono.error(BadRequestException("User with id $id does not exist")))
+    }
 
     fun findByRefreshToken(request: RefreshTokenRequest): Mono<out BaseUser> =
         typeToRepositories[request.userType]!!.findByRefreshTokenAndUserType(request.token.value, request.userType)

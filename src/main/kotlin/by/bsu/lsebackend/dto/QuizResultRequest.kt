@@ -18,10 +18,6 @@ data class QuizResultRequest(
     @field:Valid
     @JsonProperty("items")
     val items: List<QuizItemRequest>,
-
-    @field:NotBlank(message = "User id should present")
-    @JsonProperty("userId")
-    val userId: String,
 ) {
     @JsonIgnoreProperties(ignoreUnknown = true)
     data class QuizItemRequest(

@@ -12,4 +12,5 @@ interface GeneralBaseUserRepository<E : BaseUser, ID : Serializable> : ReactiveM
 
     fun findByEmailAndUserType(email: String, userType: UserType): Mono<E>
     fun findByRefreshTokenAndUserType(refreshToken: String, userType: UserType): Mono<E>
+    fun findByIdAndUserType(id: ID, userType: UserType): Mono<E>
 }

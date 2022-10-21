@@ -1,6 +1,5 @@
 package by.bsu.lsebackend.config
 
-import by.bsu.lsebackend.extension.star
 import by.bsu.lsebackend.properties.JwtProperties
 import by.bsu.lsebackend.security.AuthenticationManager
 import by.bsu.lsebackend.security.SecurityContextRepository
@@ -58,9 +57,11 @@ class WebSecurityConfig(
     @Bean
     fun corsConfigurationSource(): CorsConfigurationSource {
         val configuration = CorsConfiguration().apply {
-            allowedOrigins = listOf("*") // todo move to config
+            allowedOrigins = listOf("http://localhost:3000") // todo move to config
+//            allowedOrigins = listOf("*") // todo move to config
             allowedMethods = listOf(GET.name, POST.name, OPTIONS.name)
-            allowedHeaders = listOf(String.star()) // todo investigate what headers are required
+            allowedHeaders = listOf("*")
+            allowCredentials = true // todo investigate what headers are required
         }
         return UrlBasedCorsConfigurationSource().apply {
             registerCorsConfiguration("/**", configuration)
