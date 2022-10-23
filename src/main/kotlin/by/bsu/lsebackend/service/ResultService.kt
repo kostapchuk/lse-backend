@@ -59,4 +59,9 @@ class ResultService(
     ): Int = quizItemRequest.stream().filter { it.questionId == quizItem.question.id }.filter {
         it.answerIds.equalsIgnoreOrder(quizItem.answers.filter { a -> a.correct }.map(Quiz.QuizItem.Answer::id))
     }.map { quizItem.question.cost }.findFirst().orElse(0)
+
+    fun findAll(page: Long, size: Long): Flux<QuizResult> =
+        resultRepository.findAll().sort(Comparator.comparing(QuizResult::createdDate))
+            .skip(page * size).take(size)
+
 }

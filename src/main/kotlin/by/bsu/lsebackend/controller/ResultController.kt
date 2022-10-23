@@ -33,6 +33,15 @@ class ResultController(private val resultService: ResultService) {
         return resultService.findAllByEmail(principal.principal.toString(), page, size)
     }
 
+    @GetMapping
+    @PreAuthorize("hasAnyRole('TEACHER')")
+    fun findResults(
+        @RequestParam(value = "page", defaultValue = "0") page: Long,
+        @RequestParam(value = "size", defaultValue = "10") size: Long,
+    ): Flux<QuizResult> {
+        return resultService.findAll(page, size)
+    }
+
     @PostMapping
     @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER')")
     fun submit(@RequestBody @Validated resultRequest: ResultRequest): Mono<Int> =
