@@ -19,6 +19,8 @@ import org.springframework.web.server.ServerWebExchange
 import org.springframework.web.server.ServerWebInputException
 import reactor.core.publisher.Mono
 
+
+// todo simplify
 @Component
 @Order(-2)
 class GlobalHandler : ErrorWebExceptionHandler {

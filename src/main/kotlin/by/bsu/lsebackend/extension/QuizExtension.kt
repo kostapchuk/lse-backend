@@ -2,14 +2,25 @@ package by.bsu.lsebackend.extension
 
 import by.bsu.lsebackend.dto.QuizRequest
 import by.bsu.lsebackend.dto.QuizResponse
+import by.bsu.lsebackend.dto.QuizResultResponse
 import by.bsu.lsebackend.entity.Quiz
+import by.bsu.lsebackend.entity.QuizResult
 import java.time.LocalDateTime
+
+// todo create mappers
 
 fun Quiz.toResponse(): QuizResponse = QuizResponse(
     this.id,
     this.name,
     this.items.map { it.toResponse() },
     this.createdDate,
+)
+
+fun QuizResult.toResponse(): QuizResultResponse = QuizResultResponse(
+    quizName = this.quizName,
+    maxScore = this.maxScore,
+    score = this.score,
+    createdDate = this.createdDate,
 )
 
 fun Quiz.QuizItem.toResponse(): QuizResponse.QuizItemResponse = QuizResponse.QuizItemResponse(

@@ -13,8 +13,8 @@ import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage
 
 @Service
-class MailRuSenderService(
-    private val mailRuSmtpProperties: Properties,
+class EmailSenderService(
+    private val emailProperties: Properties,
     private val emailSenderProperties: EmailSenderProperties,
 ) : SenderService {
 
@@ -34,7 +34,7 @@ class MailRuSenderService(
     }
 
     private fun createSession(): Session = Session.getInstance(
-        mailRuSmtpProperties,
+        emailProperties,
         object : Authenticator() {
             override fun getPasswordAuthentication(): PasswordAuthentication {
                 return PasswordAuthentication(emailSenderProperties.username, emailSenderProperties.password)

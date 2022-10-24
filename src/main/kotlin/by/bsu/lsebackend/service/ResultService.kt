@@ -1,13 +1,16 @@
 package by.bsu.lsebackend.service
 
 import by.bsu.lsebackend.dto.QuizResultRequest
+import by.bsu.lsebackend.dto.QuizResultResponse
 import by.bsu.lsebackend.dto.ResultRequest
 import by.bsu.lsebackend.entity.Quiz
 import by.bsu.lsebackend.entity.QuizResult
+import by.bsu.lsebackend.exception.BadRequestException
 import by.bsu.lsebackend.extension.equalsIgnoreOrder
+import by.bsu.lsebackend.extension.toResponse
 import by.bsu.lsebackend.repository.QuizRepository
 import by.bsu.lsebackend.repository.ResultRepository
-import by.bsu.lsebackend.repository.UserRepositoryFacade
+import by.bsu.lsebackend.repository.UserRepository
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -18,23 +21,26 @@ class ResultService(
     private val quizRepository: QuizRepository,
     private val senderService: SenderService,
     private val resultRepository: ResultRepository,
-    private val userRepositoryFacade: UserRepositoryFacade,
+    private val userRepository: UserRepository,
 ) {
 
+    // todo simplify
     fun check(resultRequest: ResultRequest): Mono<Int> {
         return quizRepository.findById(resultRequest.quizResultRequest.quizId)
             .flatMap { (_, name, items, maxScore, createdDate): Quiz ->
-                userRepositoryFacade.findById(resultRequest.userId, resultRequest.userType).map {
-                    QuizResult(
-                        quizName = name,
-                        score = items.stream()
-                            .map { item -> retrieveScore(item, resultRequest.quizResultRequest.items) }
-                            .reduce { acc, next -> acc + next }.orElse(0),
-                        maxScore = maxScore,
-                        createdDate = LocalDateTime.now(),
-                        email = it.email
-                    )
-                }
+                userRepository.findByIdAndUserType(resultRequest.userId, resultRequest.userType)
+                    .switchIfEmpty(Mono.error(BadRequestException("User with id ${resultRequest.userId} does not exist")))
+                    .map {
+                        QuizResult(
+                            quizName = name,
+                            score = items.stream()
+                                .map { item -> retrieveScore(item, resultRequest.quizResultRequest.items) }
+                                .reduce { acc, next -> acc + next }.orElse(0),
+                            maxScore = maxScore,
+                            createdDate = LocalDateTime.now(),
+                            email = it.email
+                        )
+                    }
             }.flatMap {
                 resultRepository.insert(it)
             }.flatMap {
@@ -47,7 +53,8 @@ class ResultService(
             }
     }
 
-    fun findWithTailableCursorBy(): Flux<QuizResult> = resultRepository.findWithTailableCursorBy()
+    fun findWithTailableCursorBy(): Flux<QuizResultResponse> =
+        resultRepository.findWithTailableCursorBy().map { it.toResponse() }
 
     fun findAllByEmail(email: String, page: Long, size: Long): Flux<QuizResult> =
         resultRepository.findAllByEmail(email).sort(Comparator.comparing(QuizResult::createdDate).reversed())
@@ -60,8 +67,8 @@ class ResultService(
         it.answerIds.equalsIgnoreOrder(quizItem.answers.filter { a -> a.correct }.map(Quiz.QuizItem.Answer::id))
     }.map { quizItem.question.cost }.findFirst().orElse(0)
 
-    fun findAll(page: Long, size: Long): Flux<QuizResult> =
-        resultRepository.findAll().sort(Comparator.comparing(QuizResult::createdDate))
-            .skip(page * size).take(size)
+    fun findAll(page: Long, size: Long): Flux<QuizResultResponse> =
+        resultRepository.findAll().sort(Comparator.comparing(QuizResult::createdDate).reversed())
+            .skip(page * size).take(size).map { it.toResponse() }
 
 }

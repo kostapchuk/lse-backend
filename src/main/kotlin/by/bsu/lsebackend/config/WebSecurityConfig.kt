@@ -39,8 +39,8 @@ class WebSecurityConfig(
             .securityContextRepository(securityContextRepository)
             .authorizeExchange()
             .pathMatchers(
-                "/api/v1/users/register-student",
-                "/api/v1/users/register-teacher",
+                "/api/v1/users/students",
+                "/api/v1/users/teachers",
                 "/auth/refresh-token",
                 "/auth/login",
                 "/api/v1/quizzes/topics",

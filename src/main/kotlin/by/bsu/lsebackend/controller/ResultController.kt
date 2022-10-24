@@ -1,5 +1,6 @@
 package by.bsu.lsebackend.controller
 
+import by.bsu.lsebackend.dto.QuizResultResponse
 import by.bsu.lsebackend.dto.ResultRequest
 import by.bsu.lsebackend.entity.QuizResult
 import by.bsu.lsebackend.service.ResultService
@@ -25,7 +26,7 @@ class ResultController(private val resultService: ResultService) {
 
     @GetMapping("/current")
     @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER')")
-    fun findResultsForCurrentUser(
+    fun findAllPagedForCurrentUser(
         @RequestParam(value = "page", defaultValue = "0") page: Long,
         @RequestParam(value = "size", defaultValue = "10") size: Long,
         @AuthenticationPrincipal principal: Authentication
@@ -35,10 +36,10 @@ class ResultController(private val resultService: ResultService) {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('TEACHER')")
-    fun findResults(
+    fun findAllPaged(
         @RequestParam(value = "page", defaultValue = "0") page: Long,
         @RequestParam(value = "size", defaultValue = "10") size: Long,
-    ): Flux<QuizResult> {
+    ): Flux<QuizResultResponse> {
         return resultService.findAll(page, size)
     }
 
@@ -50,7 +51,7 @@ class ResultController(private val resultService: ResultService) {
     // todo investigate repeatWhen, subscribeOn
     @GetMapping(value = ["/stream"], produces = [TEXT_EVENT_STREAM_VALUE])
     @PreAuthorize("hasRole('TEACHER')")
-    fun findAllStreamed(): Flux<QuizResult> = resultService.findWithTailableCursorBy()
+    fun findAllStreamed(): Flux<QuizResultResponse> = resultService.findWithTailableCursorBy()
         .repeatWhen { flux -> flux.delayElements(Duration.ofSeconds(1)) }
         .subscribeOn(Schedulers.boundedElastic())
 }

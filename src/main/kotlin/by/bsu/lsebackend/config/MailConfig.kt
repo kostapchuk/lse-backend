@@ -8,6 +8,8 @@ import java.util.Properties
 @Configuration
 class MailConfig {
 
+    // todo move to properties
+
     @Bean
     @Primary
     fun mailRuConfig(): Properties {

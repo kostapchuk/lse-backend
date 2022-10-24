@@ -24,6 +24,7 @@ class QuizController(private val quizService: QuizService) {
     @GetMapping("/topics")
     fun findTop20Topics(): Mono<List<String>> = quizService.findTop20Topics()
 
+    // todo use spel and constants
     @GetMapping
     @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER')")
     fun findAllPaged(
