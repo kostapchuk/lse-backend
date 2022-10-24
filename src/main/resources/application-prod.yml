@@ -8,10 +8,15 @@ logging.level.org.hibernate:
   SQL: error
   type.descriptor.sql.BasicBinder: error
 
-email:
+mail:
   sender:
     username: ${EMAIL_SENDER_USERNAME}
     password: ${EMAIL_SENDER_PASSWORD}
+  smtp:
+    host: smtp.mail.ru
+    port: 465
+    ssl.enable: true
+    auth: true
 
 cors.origins: ${CORS_ORIGIN}
 
