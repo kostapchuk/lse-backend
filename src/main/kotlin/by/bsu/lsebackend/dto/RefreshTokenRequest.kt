@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull
 class RefreshTokenRequest(
     @JsonProperty("token")
     @field:NotNull
-    val token: TokenDto,
+    val token: Token,
     @JsonProperty("userType")
     @field:NotNull
     val userType: UserType,

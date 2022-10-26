@@ -1,6 +1,6 @@
 package by.bsu.lsebackend.exception
 
-import by.bsu.lsebackend.dto.ErrorDto
+import by.bsu.lsebackend.dto.ErrorResponse
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.jsonwebtoken.JwtException
@@ -49,37 +49,37 @@ class GlobalHandler : ErrorWebExceptionHandler {
         )
     }
 
-    private fun retrieveErrorDto(ex: Throwable): ErrorDto {
+    private fun retrieveErrorDto(ex: Throwable): ErrorResponse {
         return when (ex) {
             is JwtException -> {
-                ErrorDto(HttpStatus.UNAUTHORIZED, ex.message ?: "")
+                ErrorResponse(HttpStatus.UNAUTHORIZED, ex.message ?: "")
             }
 
             is MethodArgumentNotValidException -> {
-                ErrorDto(HttpStatus.BAD_REQUEST, ex.message)
+                ErrorResponse(HttpStatus.BAD_REQUEST, ex.message)
             }
 
             is WebExchangeBindException -> {
-                ErrorDto(
+                ErrorResponse(
                     HttpStatus.UNPROCESSABLE_ENTITY,
                     ex.bindingResult.fieldErrors.map { it.field to it.defaultMessage }.joinToString(),
                 )
             }
 
             is ServerWebInputException -> {
-                ErrorDto(HttpStatus.BAD_REQUEST, ex.reason ?: "")
+                ErrorResponse(HttpStatus.BAD_REQUEST, ex.reason ?: "")
             }
 
             is BadRequestException -> {
-                ErrorDto(HttpStatus.BAD_REQUEST, ex.message)
+                ErrorResponse(HttpStatus.BAD_REQUEST, ex.message)
             }
 
             is ResponseStatusException -> {
-                ErrorDto(ex.status, ex.message)
+                ErrorResponse(ex.status, ex.message)
             }
 
             else -> {
-                ErrorDto(HttpStatus.INTERNAL_SERVER_ERROR, ex.message ?: "")
+                ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.message ?: "")
             }
         }
     }

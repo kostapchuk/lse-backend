@@ -24,9 +24,9 @@ class QuizController(private val quizService: QuizService) {
     @GetMapping("/topics")
     fun findTop20Topics(): Mono<List<String>> = quizService.findTop20Topics()
 
-    // todo use spel and constants
     @GetMapping
-    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER')")
+    @PreAuthorize("#{hasAnyRole(T(by.bsu.lsebackend.entity.UserRole).ROLE_TEACHER.getRoleWithoutPrefix()," +
+            "T(by.bsu.lsebackend.entity.UserRole).ROLE_STUDENT.getRoleWithoutPrefix())}")
     fun findAllPaged(
         @RequestParam(value = "page", defaultValue = "0") page: Long,
         @RequestParam(value = "size", defaultValue = "10") size: Long,
@@ -34,6 +34,6 @@ class QuizController(private val quizService: QuizService) {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    @PreAuthorize("hasRole('TEACHER')")
+    @PreAuthorize("#{hasAnyRole(T(by.bsu.lsebackend.entity.UserRole).ROLE_TEACHER.getRoleWithoutPrefix())}")
     fun create(@RequestBody @Validated quiz: QuizRequest): Mono<Quiz> = quizService.create(quiz)
 }

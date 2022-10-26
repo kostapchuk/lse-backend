@@ -4,9 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
-// todo rename
 @JsonIgnoreProperties(ignoreUnknown = true)
-class TokenDto(
+class Token(
     @field:NotNull
     val type: TokenType,
     @field:NotBlank

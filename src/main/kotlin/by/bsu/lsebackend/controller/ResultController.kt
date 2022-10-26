@@ -25,7 +25,7 @@ import java.time.Duration
 class ResultController(private val resultService: ResultService) {
 
     @GetMapping("/current")
-    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER')")
+    @PreAuthorize("#{hasAnyRole(T(by.bsu.lsebackend.entity.UserRole).ROLE_TEACHER.getRoleWithoutPrefix(), T(by.bsu.lsebackend.entity.UserRole).ROLE_STUDENT.getRoleWithoutPrefix())}")
     fun findAllPagedForCurrentUser(
         @RequestParam(value = "page", defaultValue = "0") page: Long,
         @RequestParam(value = "size", defaultValue = "10") size: Long,
@@ -35,7 +35,7 @@ class ResultController(private val resultService: ResultService) {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('TEACHER')")
+    @PreAuthorize("#{hasAnyRole(T(by.bsu.lsebackend.entity.UserRole).ROLE_TEACHER.getRoleWithoutPrefix())}")
     fun findAllPaged(
         @RequestParam(value = "page", defaultValue = "0") page: Long,
         @RequestParam(value = "size", defaultValue = "10") size: Long,
@@ -44,13 +44,14 @@ class ResultController(private val resultService: ResultService) {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER')")
+    @PreAuthorize("#{hasAnyRole(T(by.bsu.lsebackend.entity.UserRole).ROLE_TEACHER.getRoleWithoutPrefix()," +
+            "T(by.bsu.lsebackend.entity.UserRole).ROLE_STUDENT.getRoleWithoutPrefix())}")
     fun submit(@RequestBody @Validated resultRequest: ResultRequest): Mono<Int> =
         resultService.check(resultRequest)
 
     // todo investigate repeatWhen, subscribeOn
     @GetMapping(value = ["/stream"], produces = [TEXT_EVENT_STREAM_VALUE])
-    @PreAuthorize("hasRole('TEACHER')")
+    @PreAuthorize("#{hasAnyRole(T(by.bsu.lsebackend.entity.UserRole).ROLE_TEACHER.getRoleWithoutPrefix())}")
     fun findAllStreamed(): Flux<QuizResultResponse> = resultService.findWithTailableCursorBy()
         .repeatWhen { flux -> flux.delayElements(Duration.ofSeconds(1)) }
         .subscribeOn(Schedulers.boundedElastic())

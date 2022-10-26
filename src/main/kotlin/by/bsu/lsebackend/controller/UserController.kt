@@ -22,7 +22,6 @@ import reactor.core.publisher.Mono
 class UserController(private val userService: UserService) {
 
     @PostMapping("/teachers")
-//    @PreAuthorize("hasRole('TEACHER')")
     @ResponseStatus(CREATED)
     fun registerTeacher(@RequestBody @Validated request: TeacherRequest): Mono<RegisterResponse> =
         userService.register(request)
@@ -34,7 +33,7 @@ class UserController(private val userService: UserService) {
 
     @DeleteMapping("/{userId}")
     @ResponseStatus(NO_CONTENT)
-    @PreAuthorize("hasRole('TEACHER')")
+    @PreAuthorize("#{hasAnyRole(T(by.bsu.lsebackend.entity.UserRole).ROLE_TEACHER.getRoleWithoutPrefix())}")
     fun delete(@PathVariable @Validated userId: String): Mono<Void> =
         userService.deleteById(userId)
 }
