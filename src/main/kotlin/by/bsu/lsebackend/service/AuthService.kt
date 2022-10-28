@@ -29,7 +29,8 @@ class AuthService(
     fun refreshToken(request: RefreshTokenRequest): Mono<LoginResponse> =
         tokenService.isValid(request.token.value)
             .flatMap {
-                userRepository.findByRefreshTokenAndUserType(request.token.value, request.userType).flatMap(::updateRefreshToken)
+                userRepository.findByRefreshTokenAndUserType(request.token.value, request.userType)
+                    .flatMap(::updateRefreshToken)
                     .switchIfEmpty(Mono.error(BadRequestException("The user associated with the token is not found")))
             }
             .switchIfEmpty(Mono.error(BadRequestException("Refresh token is invalid")))

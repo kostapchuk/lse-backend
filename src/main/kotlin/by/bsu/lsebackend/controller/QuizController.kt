@@ -21,12 +21,9 @@ import reactor.core.publisher.Mono
 @RequestMapping("/api/v1/quizzes")
 class QuizController(private val quizService: QuizService) {
 
-    @GetMapping("/topics")
-    fun findTop20Topics(): Mono<List<String>> = quizService.findTop20Topics()
-
     @GetMapping
-    @PreAuthorize("#{hasAnyRole(T(by.bsu.lsebackend.entity.UserRole).ROLE_TEACHER.getRoleWithoutPrefix()," +
-            "T(by.bsu.lsebackend.entity.UserRole).ROLE_STUDENT.getRoleWithoutPrefix())}")
+    @PreAuthorize("hasAnyAuthority(T(by.bsu.lsebackend.entity.UserRole).ROLE_TEACHER," +
+            "T(by.bsu.lsebackend.entity.UserRole).ROLE_STUDENT)")
     fun findAllPaged(
         @RequestParam(value = "page", defaultValue = "0") page: Long,
         @RequestParam(value = "size", defaultValue = "10") size: Long,
@@ -34,6 +31,6 @@ class QuizController(private val quizService: QuizService) {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    @PreAuthorize("#{hasAnyRole(T(by.bsu.lsebackend.entity.UserRole).ROLE_TEACHER.getRoleWithoutPrefix())}")
+    @PreAuthorize("hasAuthority(T(by.bsu.lsebackend.entity.UserRole).ROLE_TEACHER)")
     fun create(@RequestBody @Validated quiz: QuizRequest): Mono<Quiz> = quizService.create(quiz)
 }

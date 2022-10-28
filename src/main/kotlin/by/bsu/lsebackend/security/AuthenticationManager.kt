@@ -1,13 +1,12 @@
 package by.bsu.lsebackend.security
 
 import by.bsu.lsebackend.entity.UserRole
+import by.bsu.lsebackend.security.SecurityConstant.ROLE
 import org.springframework.security.authentication.ReactiveAuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Component
 import reactor.core.publisher.Mono
-
-private const val ROLE = "role"
 
 @Component
 class AuthenticationManager(private val tokenService: TokenService) : ReactiveAuthenticationManager {
@@ -18,12 +17,11 @@ class AuthenticationManager(private val tokenService: TokenService) : ReactiveAu
                 val claims = tokenService.retrieveClaims(authToken)
                 claims.get(ROLE, ArrayList::class.java)
             }.map { roles ->
-                val authenticationToken: Authentication = UsernamePasswordAuthenticationToken(
+                return@map UsernamePasswordAuthenticationToken(
                     tokenService.retrieveUsername(authToken),
                     null,
                     roles.map { UserRole.valueOf(it.toString()).getAuthority() }
-                )
-                return@map authenticationToken
+                ) as Authentication
             }.switchIfEmpty(Mono.empty())
     }
 }

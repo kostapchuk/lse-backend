@@ -7,8 +7,6 @@ import javax.validation.Valid
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
-// todo: add validation like in QuizRequest
-
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class ResultRequest(
     @JsonProperty("quizResult")

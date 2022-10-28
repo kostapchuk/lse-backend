@@ -4,7 +4,7 @@ import by.bsu.lsebackend.dto.RegisterResponse
 import by.bsu.lsebackend.dto.UserRequest
 import by.bsu.lsebackend.entity.BaseUser
 import by.bsu.lsebackend.exception.BadRequestException
-import by.bsu.lsebackend.extension.toResponse
+import by.bsu.lsebackend.mapper.BaseUserMapper
 import by.bsu.lsebackend.repository.UserRepository
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
@@ -16,6 +16,7 @@ import reactor.core.publisher.Mono
 class UserService(
     private val userRepository: UserRepository,
     private val passwordEncoder: PasswordEncoder,
+    private val baseUserMapper: BaseUserMapper,
 ) {
 
     fun <T : UserRequest<out BaseUser>> register(request: T): Mono<RegisterResponse> =
@@ -28,9 +29,6 @@ class UserService(
                 }.flatMap {
                     it.password = passwordEncoder.encode(it.password)
                     userRepository.save(it)
-                }.map { it.toResponse() }
+                }.map { baseUserMapper.toResponse(it) }
             )
-
-    fun deleteById(userId: String): Mono<Void> =
-        userRepository.deleteById(userId)
 }

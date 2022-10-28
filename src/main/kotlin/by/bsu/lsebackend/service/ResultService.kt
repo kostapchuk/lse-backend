@@ -7,7 +7,7 @@ import by.bsu.lsebackend.entity.Quiz
 import by.bsu.lsebackend.entity.QuizResult
 import by.bsu.lsebackend.exception.BadRequestException
 import by.bsu.lsebackend.extension.equalsIgnoreOrder
-import by.bsu.lsebackend.extension.toResponse
+import by.bsu.lsebackend.mapper.QuizResultMapper
 import by.bsu.lsebackend.repository.QuizRepository
 import by.bsu.lsebackend.repository.ResultRepository
 import by.bsu.lsebackend.repository.UserRepository
@@ -19,46 +19,27 @@ import java.time.LocalDateTime
 @Service
 class ResultService(
     private val quizRepository: QuizRepository,
-    private val senderService: SenderService,
     private val resultRepository: ResultRepository,
     private val userRepository: UserRepository,
+    private val quizResultMapper: QuizResultMapper,
 ) {
 
-    // todo simplify
     fun check(resultRequest: ResultRequest): Mono<Int> {
         return quizRepository.findById(resultRequest.quizResultRequest.quizId)
             .flatMap { (_, name, items, maxScore, createdDate): Quiz ->
-                userRepository.findByIdAndUserType(resultRequest.userId, resultRequest.userType)
-                    .switchIfEmpty(Mono.error(BadRequestException("User with id ${resultRequest.userId} does not exist")))
-                    .map {
-                        QuizResult(
-                            quizName = name,
-                            score = items.stream()
-                                .map { item -> retrieveScore(item, resultRequest.quizResultRequest.items) }
-                                .reduce { acc, next -> acc + next }.orElse(0),
-                            maxScore = maxScore,
-                            createdDate = LocalDateTime.now(),
-                            email = it.email
-                        )
-                    }
+                toQuizResult(resultRequest, name, items, maxScore)
             }.flatMap {
-                resultRepository.insert(it)
-            }.flatMap {
-//                senderService.send(
-//                    resultRequest.userResultRequest.email,
-//                    "Ваш результат ${it.score} из ${it.maxScore}",
-//                    "Результат теста: ${it.quizName}"
-//                )
-                return@flatMap Mono.just(it.score)
+                resultRepository.insert(it).map { result -> result.score }
             }
     }
 
-    fun findWithTailableCursorBy(): Flux<QuizResultResponse> =
-        resultRepository.findWithTailableCursorBy().map { it.toResponse() }
-
-    fun findAllByEmail(email: String, page: Long, size: Long): Flux<QuizResult> =
+    fun findAllByEmail(email: String, page: Long, size: Long): Flux<QuizResultResponse> =
         resultRepository.findAllByEmail(email).sort(Comparator.comparing(QuizResult::createdDate).reversed())
-            .skip(page * size).take(size)
+            .skip(page * size).take(size).map { quizResultMapper.toResponse(it) }
+
+    fun findAll(page: Long, size: Long): Flux<QuizResultResponse> =
+        resultRepository.findAll().sort(Comparator.comparing(QuizResult::createdDate).reversed())
+            .skip(page * size).take(size).map { quizResultMapper.toResponse(it) }
 
     private fun retrieveScore(
         quizItem: Quiz.QuizItem,
@@ -67,8 +48,22 @@ class ResultService(
         it.answerIds.equalsIgnoreOrder(quizItem.answers.filter { a -> a.correct }.map(Quiz.QuizItem.Answer::id))
     }.map { quizItem.question.cost }.findFirst().orElse(0)
 
-    fun findAll(page: Long, size: Long): Flux<QuizResultResponse> =
-        resultRepository.findAll().sort(Comparator.comparing(QuizResult::createdDate).reversed())
-            .skip(page * size).take(size).map { it.toResponse() }
-
+    private fun toQuizResult(
+        resultRequest: ResultRequest,
+        name: String,
+        items: List<Quiz.QuizItem>,
+        maxScore: Int,
+    ) = userRepository.findByIdAndUserType(resultRequest.userId, resultRequest.userType)
+        .switchIfEmpty(Mono.error(BadRequestException("User with id ${resultRequest.userId} does not exist")))
+        .map {
+            QuizResult(
+                quizName = name,
+                score = items.stream()
+                    .map { item -> retrieveScore(item, resultRequest.quizResultRequest.items) }
+                    .reduce { acc, next -> acc + next }.orElse(0),
+                maxScore = maxScore,
+                createdDate = LocalDateTime.now(),
+                email = it.email,
+            )
+        }
 }

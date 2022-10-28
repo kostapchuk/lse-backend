@@ -4,6 +4,7 @@ import by.bsu.lsebackend.dto.Token
 import by.bsu.lsebackend.dto.TokenType
 import by.bsu.lsebackend.entity.BaseUser
 import by.bsu.lsebackend.properties.JwtProperties
+import by.bsu.lsebackend.security.SecurityConstant.ROLE
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
@@ -13,8 +14,6 @@ import java.security.Key
 import java.time.Duration
 import java.util.Date
 import javax.crypto.spec.SecretKeySpec
-
-private const val ROLE = "role"
 
 @Component
 class TokenService(private val jwtProperties: JwtProperties) {

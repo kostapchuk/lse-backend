@@ -9,9 +9,6 @@ import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
 
-// todo: investigate how to validate integers (to allow only integers and throw validation exception for numbers with decimal part)
-// todo: investigate how to validate booleans (to allow only true/false and do not cast 12 as true)
-
 @JsonIgnoreProperties(ignoreUnknown = true)
 class QuizRequest(
     @JsonProperty("quizName", required = true)

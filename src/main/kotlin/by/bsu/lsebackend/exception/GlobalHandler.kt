@@ -1,9 +1,11 @@
 package by.bsu.lsebackend.exception
 
 import by.bsu.lsebackend.dto.ErrorResponse
+import by.bsu.lsebackend.extension.empty
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.jsonwebtoken.JwtException
+import mu.KotlinLogging
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler
 import org.springframework.core.annotation.Order
 import org.springframework.core.io.buffer.DataBufferFactory
@@ -19,8 +21,8 @@ import org.springframework.web.server.ServerWebExchange
 import org.springframework.web.server.ServerWebInputException
 import reactor.core.publisher.Mono
 
+private val logger = KotlinLogging.logger {}
 
-// todo simplify
 @Component
 @Order(-2)
 class GlobalHandler : ErrorWebExceptionHandler {
@@ -50,9 +52,10 @@ class GlobalHandler : ErrorWebExceptionHandler {
     }
 
     private fun retrieveErrorDto(ex: Throwable): ErrorResponse {
+        logger.error { ex }
         return when (ex) {
             is JwtException -> {
-                ErrorResponse(HttpStatus.UNAUTHORIZED, ex.message ?: "")
+                ErrorResponse(HttpStatus.UNAUTHORIZED, ex.message ?: String.empty())
             }
 
             is MethodArgumentNotValidException -> {
@@ -67,7 +70,7 @@ class GlobalHandler : ErrorWebExceptionHandler {
             }
 
             is ServerWebInputException -> {
-                ErrorResponse(HttpStatus.BAD_REQUEST, ex.reason ?: "")
+                ErrorResponse(HttpStatus.BAD_REQUEST, ex.reason ?: String.empty())
             }
 
             is BadRequestException -> {
@@ -79,7 +82,7 @@ class GlobalHandler : ErrorWebExceptionHandler {
             }
 
             else -> {
-                ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.message ?: "")
+                ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.message ?: String.empty())
             }
         }
     }

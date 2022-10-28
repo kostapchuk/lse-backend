@@ -8,6 +8,7 @@ class QuizResultResponse(
     val id: String = UUID.randomUUID().toString(),
     val quizName: String,
     val score: Int,
+    val email: String,
     val maxScore: Int,
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     val createdDate: LocalDateTime,

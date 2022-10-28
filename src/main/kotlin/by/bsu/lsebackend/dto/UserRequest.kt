@@ -8,13 +8,10 @@ import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
-// todo add validation
-
 @JsonIgnoreProperties(ignoreUnknown = true)
 abstract class UserRequest<E>(
     @JsonProperty("firstName")
     @field:NotBlank
-    // todo add size for all fields, configure in frontend also
     val firstName: String,
     @JsonProperty("lastName")
     @field:NotBlank

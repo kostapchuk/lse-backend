@@ -8,13 +8,6 @@ import org.springframework.boot.runApplication
 import org.springframework.cache.annotation.EnableCaching
 import org.springframework.scheduling.annotation.EnableAsync
 
-// todo test responses to have body (status, timestamp, message)
-// todo log exceptions
-// todo add validation for input
-// todo try to convert TokenService to functional style
-// todo write tests
-// todo add mono/flux to parameter in controllers
-
 @SpringBootApplication
 @EnableAsync
 @EnableCaching

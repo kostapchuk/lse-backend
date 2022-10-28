@@ -21,10 +21,10 @@ mail:
   smtp:
     host: smtp.mail.ru
     port: 465
-    ssl.enable: true
+    ssl-enable: true
     auth: true
 
-cors.origins: ${CORS_ORIGIN}
+cors.origin: ${CORS_ORIGIN}
 
 jwt:
   secret: ${JWT_SECRET}

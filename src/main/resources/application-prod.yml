@@ -18,7 +18,7 @@ mail:
     ssl.enable: true
     auth: true
 
-cors.origins: ${CORS_ORIGIN}
+cors.origin: ${CORS_ORIGIN}
 
 jwt:
   secret: ${JWT_SECRET}

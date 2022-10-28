@@ -7,8 +7,6 @@ import javax.validation.Valid
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
-// todo add messages and test messages
-
 @Validated
 @ConstructorBinding
 @ConfigurationProperties(prefix = "mail")
