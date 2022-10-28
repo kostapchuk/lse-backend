@@ -5,7 +5,7 @@ import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-class TokenDto(
+class Token(
     @field:NotNull
     val type: TokenType,
     @field:NotBlank

@@ -1,10 +1,8 @@
 package by.bsu.lsebackend.entity
 
-import org.springframework.data.mongodb.core.mapping.Document
 import org.springframework.data.mongodb.core.mapping.Field
 import java.util.UUID
 
-@Document("users")
 class Student(
     id: String = UUID.randomUUID().toString(),
     firstName: String,

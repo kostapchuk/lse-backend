@@ -1,9 +1,11 @@
 package by.bsu.lsebackend.exception
 
-import by.bsu.lsebackend.dto.ErrorDto
+import by.bsu.lsebackend.dto.ErrorResponse
+import by.bsu.lsebackend.extension.empty
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.jsonwebtoken.JwtException
+import mu.KotlinLogging
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler
 import org.springframework.core.annotation.Order
 import org.springframework.core.io.buffer.DataBufferFactory
@@ -18,6 +20,8 @@ import org.springframework.web.server.ResponseStatusException
 import org.springframework.web.server.ServerWebExchange
 import org.springframework.web.server.ServerWebInputException
 import reactor.core.publisher.Mono
+
+private val logger = KotlinLogging.logger {}
 
 @Component
 @Order(-2)
@@ -47,37 +51,38 @@ class GlobalHandler : ErrorWebExceptionHandler {
         )
     }
 
-    private fun retrieveErrorDto(ex: Throwable): ErrorDto {
+    private fun retrieveErrorDto(ex: Throwable): ErrorResponse {
+        logger.error { ex }
         return when (ex) {
             is JwtException -> {
-                ErrorDto(HttpStatus.UNAUTHORIZED, ex.message ?: "")
+                ErrorResponse(HttpStatus.UNAUTHORIZED, ex.message ?: String.empty())
             }
 
             is MethodArgumentNotValidException -> {
-                ErrorDto(HttpStatus.BAD_REQUEST, ex.message)
+                ErrorResponse(HttpStatus.BAD_REQUEST, ex.message)
             }
 
             is WebExchangeBindException -> {
-                ErrorDto(
+                ErrorResponse(
                     HttpStatus.UNPROCESSABLE_ENTITY,
                     ex.bindingResult.fieldErrors.map { it.field to it.defaultMessage }.joinToString(),
                 )
             }
 
             is ServerWebInputException -> {
-                ErrorDto(HttpStatus.BAD_REQUEST, ex.reason ?: "")
+                ErrorResponse(HttpStatus.BAD_REQUEST, ex.reason ?: String.empty())
             }
 
             is BadRequestException -> {
-                ErrorDto(HttpStatus.BAD_REQUEST, ex.message)
+                ErrorResponse(HttpStatus.BAD_REQUEST, ex.message)
             }
 
             is ResponseStatusException -> {
-                ErrorDto(ex.status, ex.message)
+                ErrorResponse(ex.status, ex.message)
             }
 
             else -> {
-                ErrorDto(HttpStatus.INTERNAL_SERVER_ERROR, ex.message ?: "")
+                ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.message ?: String.empty())
             }
         }
     }

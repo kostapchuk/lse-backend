@@ -7,13 +7,9 @@ import java.util.UUID
 class QuizResultResponse(
     val id: String = UUID.randomUUID().toString(),
     val quizName: String,
-    val firstName: String,
-    val lastName: String,
-    val group: String,
-    val faculty: String,
-    val email: String,
     val score: Int,
+    val email: String,
     val maxScore: Int,
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     val createdDate: LocalDateTime,
 )

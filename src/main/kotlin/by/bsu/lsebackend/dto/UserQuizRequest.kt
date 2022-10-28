@@ -5,8 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
 
-// todo: add validation like in QuizRequest
-
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class UserQuizRequest(
     @field:NotBlank(message = "First name should present")

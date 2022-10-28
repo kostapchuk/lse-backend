@@ -1,25 +1,26 @@
 package by.bsu.lsebackend.service
 
-import by.bsu.lsebackend.dto.DeleteUserRequest
 import by.bsu.lsebackend.dto.RegisterResponse
 import by.bsu.lsebackend.dto.UserRequest
 import by.bsu.lsebackend.entity.BaseUser
 import by.bsu.lsebackend.exception.BadRequestException
-import by.bsu.lsebackend.extension.toResponse
-import by.bsu.lsebackend.repository.UserRepositoryFacade
+import by.bsu.lsebackend.mapper.BaseUserMapper
+import by.bsu.lsebackend.repository.UserRepository
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import reactor.core.publisher.Mono
 
 @Service
+@Transactional
 class UserService(
-    private val userRepositoryFacade: UserRepositoryFacade,
+    private val userRepository: UserRepository,
     private val passwordEncoder: PasswordEncoder,
+    private val baseUserMapper: BaseUserMapper,
 ) {
-    @Transactional
+
     fun <T : UserRequest<out BaseUser>> register(request: T): Mono<RegisterResponse> =
-        userRepositoryFacade.existsByEmail(request.email)
+        userRepository.existsByEmail(request.email).filter { it == true }
             .flatMap<RegisterResponse> {
                 Mono.error(BadRequestException("User with email ${request.email} already exists"))
             }.switchIfEmpty(
@@ -27,10 +28,7 @@ class UserService(
                     it.toEntity()
                 }.flatMap {
                     it.password = passwordEncoder.encode(it.password)
-                    userRepositoryFacade.save(it)
-                }.map { it.toResponse() }
+                    userRepository.save(it)
+                }.map { baseUserMapper.toResponse(it) }
             )
-
-    fun delete(request: DeleteUserRequest): Mono<Void> =
-        userRepositoryFacade.delete(request)
 }

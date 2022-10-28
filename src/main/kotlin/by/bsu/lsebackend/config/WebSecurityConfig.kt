@@ -1,8 +1,10 @@
 package by.bsu.lsebackend.config
 
+import by.bsu.lsebackend.extension.star
 import by.bsu.lsebackend.properties.JwtProperties
 import by.bsu.lsebackend.security.AuthenticationManager
 import by.bsu.lsebackend.security.SecurityContextRepository
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.http.HttpMethod.GET
 import org.springframework.http.HttpMethod.OPTIONS
@@ -23,6 +25,8 @@ class WebSecurityConfig(
     private val authenticationManager: AuthenticationManager,
     private val securityContextRepository: SecurityContextRepository,
     private val jwtProperties: JwtProperties,
+    @Value("\${cors.origin}")
+    private val corsAllowedOrigin: String
 ) {
     @Bean
     fun passwordEncoder(): PasswordEncoder {
@@ -30,8 +34,8 @@ class WebSecurityConfig(
     }
 
     @Bean
-    fun securityWebFilterChain(httpSecurity: ServerHttpSecurity): SecurityWebFilterChain {
-        return httpSecurity
+    fun securityWebFilterChain(httpSecurity: ServerHttpSecurity): SecurityWebFilterChain =
+        httpSecurity
             .csrf().disable()
             .formLogin().disable()
             .httpBasic().disable()
@@ -39,29 +43,33 @@ class WebSecurityConfig(
             .securityContextRepository(securityContextRepository)
             .authorizeExchange()
             .pathMatchers(
-                "/api/v1/users/register-student",
-                "/api/v1/users/register-teacher",
+                POST,
+                "/api/v1/users/students",
+                "/api/v1/users/teachers",
                 "/auth/refresh-token",
-                "/auth/login",
-                "/api/v1/quizzes/topics",
-                "/webjars/swagger-ui/**", "/webjars/swagger-ui.html",
-                "/swagger-ui/**", "/swagger-ui.html",
+                "/auth/login"
+            )
+            .permitAll()
+            .pathMatchers(
+                GET,
+                "/webjars/swagger-ui/**",
+                "/webjars/swagger-ui.html",
+                "/swagger-ui/**",
+                "/swagger-ui.html",
                 "/v3/api-docs/**",
-            ).permitAll()
+            )
+            .permitAll()
             .anyExchange().authenticated()
             .and()
             .build()
-        // todo mvc matchers and exact method name (get, post)
-    }
 
     @Bean
     fun corsConfigurationSource(): CorsConfigurationSource {
         val configuration = CorsConfiguration().apply {
-            allowedOrigins = listOf("http://localhost:3000") // todo move to config
-//            allowedOrigins = listOf("*") // todo move to config
+            allowedOrigins = listOf(corsAllowedOrigin)
             allowedMethods = listOf(GET.name, POST.name, OPTIONS.name)
-            allowedHeaders = listOf("*")
-            allowCredentials = true // todo investigate what headers are required
+            allowedHeaders = listOf(String.star())
+            allowCredentials = true
         }
         return UrlBasedCorsConfigurationSource().apply {
             registerCorsConfiguration("/**", configuration)

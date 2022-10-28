@@ -12,7 +12,7 @@ class QuizResponse(
     @JsonProperty("quizItems")
     val items: List<QuizItemResponse>,
     @JsonProperty("createdDate")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     val createdDate: LocalDateTime,
 ) {
     class QuizItemResponse(

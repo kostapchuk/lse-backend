@@ -6,8 +6,6 @@ import javax.validation.Valid
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
-// todo: add validation like in QuizRequest
-
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class QuizResultRequest(
     @field:NotBlank(message = "Quiz id should present")
@@ -26,7 +24,6 @@ data class QuizResultRequest(
         val questionId: String,
 
         @field:NotNull(message = "Answers should present")
-        // todo add validation for list entries
         @JsonProperty("answerIds")
         val answerIds: List<String>,
     )

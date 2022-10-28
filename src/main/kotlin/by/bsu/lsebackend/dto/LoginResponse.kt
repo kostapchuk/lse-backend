@@ -6,9 +6,9 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 class LoginResponse(
     @JsonProperty("accessToken")
-    val accessToken: TokenDto,
+    val accessToken: Token,
     @JsonProperty("refreshToken")
-    val refreshToken: TokenDto,
+    val refreshToken: Token,
     @JsonProperty("id")
     val id: String,
     @JsonProperty("userType")

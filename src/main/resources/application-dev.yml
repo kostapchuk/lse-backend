@@ -11,15 +11,19 @@ spring:
 logging.level:
   org.hibernate.stat: DEBUG
 
-
 server.error.include-message: always
 
-email:
+mail:
   sender:
     username: ${EMAIL_SENDER_USERNAME}
     password: ${EMAIL_SENDER_PASSWORD}
+  smtp:
+    host: smtp.mail.ru
+    port: 465
+    ssl-enable: true
+    auth: true
 
-cors.origins: ${CORS_ORIGIN}
+cors.origin: ${CORS_ORIGIN}
 
 jwt:
   secret: ${JWT_SECRET}

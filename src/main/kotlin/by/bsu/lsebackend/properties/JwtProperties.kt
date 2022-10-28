@@ -11,8 +11,6 @@ import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Positive
 
-// todo add messages and test messages
-
 @Validated
 @ConstructorBinding
 @ConfigurationProperties(prefix = "jwt")

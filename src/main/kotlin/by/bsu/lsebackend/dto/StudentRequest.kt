@@ -10,8 +10,6 @@ import javax.validation.constraints.Min
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
-// todo add validation
-
 @JsonIgnoreProperties(ignoreUnknown = true)
 class StudentRequest(
     firstName: String,
