@@ -63,7 +63,6 @@ class WebSecurityConfig(
             .and()
             .build()
 
-
     @Bean
     fun corsConfigurationSource(): CorsConfigurationSource {
         val configuration = CorsConfiguration().apply {

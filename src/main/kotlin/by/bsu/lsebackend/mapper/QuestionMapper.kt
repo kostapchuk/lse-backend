@@ -17,8 +17,8 @@ class QuestionMapper {
 
     fun toEntity(questionRequest: QuizRequest.QuizItemRequest.QuestionRequest): Quiz.QuizItem.Question =
         Quiz.QuizItem.Question(
-        text = questionRequest.text,
-        multipleChoice = questionRequest.multipleChoice,
-        cost = questionRequest.cost
-    )
+            text = questionRequest.text,
+            multipleChoice = questionRequest.multipleChoice,
+            cost = questionRequest.cost
+        )
 }

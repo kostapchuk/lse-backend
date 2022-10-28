@@ -22,5 +22,4 @@ class QuizService(private val quizRepository: QuizRepository, private val quizMa
             .map { quizMapper.toResponse(it) }
 
     fun create(quiz: QuizRequest): Mono<Quiz> = quizRepository.save(quizMapper.toEntity(quiz))
-
 }

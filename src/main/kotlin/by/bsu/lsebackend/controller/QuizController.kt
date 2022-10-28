@@ -22,8 +22,10 @@ import reactor.core.publisher.Mono
 class QuizController(private val quizService: QuizService) {
 
     @GetMapping
-    @PreAuthorize("hasAnyAuthority(T(by.bsu.lsebackend.entity.UserRole).ROLE_TEACHER," +
-            "T(by.bsu.lsebackend.entity.UserRole).ROLE_STUDENT)")
+    @PreAuthorize(
+        "hasAnyAuthority(T(by.bsu.lsebackend.entity.UserRole).ROLE_TEACHER," +
+            "T(by.bsu.lsebackend.entity.UserRole).ROLE_STUDENT)"
+    )
     fun findAllPaged(
         @RequestParam(value = "page", defaultValue = "0") page: Long,
         @RequestParam(value = "size", defaultValue = "10") size: Long,

@@ -30,5 +30,4 @@ class SecurityContextRepository(private val authenticationManager: Authenticatio
                     .map { SecurityContextImpl(it) as SecurityContext }
             }
             .orElse(Mono.empty())
-
 }
