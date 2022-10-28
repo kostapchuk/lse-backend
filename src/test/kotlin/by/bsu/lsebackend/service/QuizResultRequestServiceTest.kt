@@ -2,7 +2,7 @@ package by.bsu.lsebackend.service
 
 import by.bsu.lsebackend.dto.QuizResultRequest
 import by.bsu.lsebackend.dto.ResultRequest
-import by.bsu.lsebackend.dto.UserResultRequest
+import by.bsu.lsebackend.dto.UserQuizRequest
 import by.bsu.lsebackend.entity.Quiz
 import by.bsu.lsebackend.repository.QuizRepository
 import org.junit.jupiter.api.Test
@@ -62,7 +62,7 @@ class QuizResultRequestServiceTest(@Autowired private val resultService: ResultS
                     QuizResultRequest.QuizItemRequest("111", listOf("a333"))
                 )
             ),
-            UserResultRequest("Kirill", "Ostapchuk", "kera.ostapchuk2@mail.ru", "123q", "FSC")
+            UserQuizRequest("Kirill", "Ostapchuk", "kera.ostapchuk2@mail.ru", "123q", "FSC")
         )
 
     @Test

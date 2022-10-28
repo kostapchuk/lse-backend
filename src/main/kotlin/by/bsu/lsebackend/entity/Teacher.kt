@@ -4,16 +4,16 @@ import org.springframework.data.mongodb.core.mapping.Document
 import org.springframework.data.mongodb.core.mapping.Field
 import java.util.UUID
 
-@Document("teachers")
+@Document("users")
 class Teacher(
     id: String = UUID.randomUUID().toString(),
     firstName: String,
     lastName: String,
     email: String,
     password: String,
-    role: String,
-    @Field("degree")
-    val degree: String,
+    userRole: UserRole,
+    userType: UserType,
+    faculty: String,
     @Field("yearsOfExperience")
-    val yearsOfExperience: String,
-) : BaseUser(id, firstName, lastName, email, password, role)
+    val yearsOfExperience: Int,
+) : BaseUser(id, firstName, lastName, email, password, userRole, userType, faculty)

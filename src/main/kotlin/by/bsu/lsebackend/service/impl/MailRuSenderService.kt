@@ -1,6 +1,6 @@
 package by.bsu.lsebackend.service.impl
 
-import by.bsu.lsebackend.config.EmailSenderConfig
+import by.bsu.lsebackend.properties.EmailSenderProperties
 import by.bsu.lsebackend.service.SenderService
 import org.springframework.stereotype.Service
 import java.util.Properties
@@ -15,7 +15,7 @@ import javax.mail.internet.MimeMessage
 @Service
 class MailRuSenderService(
     private val mailRuSmtpProperties: Properties,
-    private val emailSenderConfig: EmailSenderConfig,
+    private val emailSenderProperties: EmailSenderProperties,
 ) : SenderService {
 
     override fun send(
@@ -23,20 +23,22 @@ class MailRuSenderService(
         message: String,
         subject: String,
     ) {
-        val session = Session.getInstance(
-            mailRuSmtpProperties,
-            object : Authenticator() {
-                override fun getPasswordAuthentication(): PasswordAuthentication {
-                    return PasswordAuthentication(emailSenderConfig.username, emailSenderConfig.password)
-                }
-            }
-        )
+        val session = createSession()
         val mimeMsg = MimeMessage(session).apply {
             this.addRecipient(Message.RecipientType.TO, InternetAddress(to))
             this.subject = subject
             this.setText(message)
-            this.setFrom(InternetAddress(emailSenderConfig.username))
+            this.setFrom(InternetAddress(emailSenderProperties.username))
         }
         Transport.send(mimeMsg)
     }
+
+    private fun createSession(): Session = Session.getInstance(
+        mailRuSmtpProperties,
+        object : Authenticator() {
+            override fun getPasswordAuthentication(): PasswordAuthentication {
+                return PasswordAuthentication(emailSenderProperties.username, emailSenderProperties.password)
+            }
+        }
+    )
 }

@@ -9,6 +9,10 @@ interface ResultRepository : ReactiveMongoRepository<QuizResult, String> {
 
     // todo: add pagination and more precise fetching (by test, by group)
 
+    // db.createCollection("results", { capped : true, size : 5242880, max : 50 } )
+
     @Tailable
     fun findWithTailableCursorBy(): Flux<QuizResult>
+
+    fun findAllByEmail(email: String): Flux<QuizResult>
 }

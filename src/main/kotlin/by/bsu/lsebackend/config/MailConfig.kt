@@ -11,11 +11,11 @@ class MailConfig {
     @Bean
     @Primary
     fun mailRuConfig(): Properties {
-        val properties = System.getProperties()
-        properties["mail.smtp.host"] = "smtp.mail.ru"
-        properties["mail.smtp.port"] = "465"
-        properties["mail.smtp.ssl.enable"] = true
-        properties["mail.smtp.auth"] = true
-        return properties
+        return System.getProperties().apply {
+            this["mail.smtp.host"] = "smtp.mail.ru"
+            this["mail.smtp.port"] = "465"
+            this["mail.smtp.ssl.enable"] = true
+            this["mail.smtp.auth"] = true
+        }
     }
 }
