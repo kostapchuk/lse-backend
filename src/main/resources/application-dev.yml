@@ -1,0 +1,33 @@
+spring:
+  data.mongodb.uri: mongodb://${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB_NAME}
+  jpa:
+    hibernate.ddl-auto: validate
+    show-sql: true
+    properties.hibernate:
+      generate_statistics: true
+      session:
+        events.log.LOG_QUERIES_SLOWER_THAN_MS: 1
+  cache.caffeine.spec: maximumSize=500, expireAfterAccess=30s
+logging.level:
+  org.hibernate.stat: DEBUG
+
+server.error.include-message: always
+
+mail:
+  sender:
+    username: ${EMAIL_SENDER_USERNAME}
+    password: ${EMAIL_SENDER_PASSWORD}
+  smtp:
+    host: smtp.mail.ru
+    port: 465
+    ssl-enable: true
+    auth: true
+
+cors.origin: ${CORS_ORIGIN}
+
+jwt:
+  secret: ${JWT_SECRET}
+  iteration: 12
+  access-token-expiration: 50m
+  refresh-token-expiration: 300m
+
